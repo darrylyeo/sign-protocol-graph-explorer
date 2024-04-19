@@ -96,14 +96,16 @@
 			for (const recipient of attestation.recipients) {
 				// Attester → Recipient
 				{
-					const id = `account/${attestation.attester}|account/${recipient}`
+					const sourceId = `account/${attestation.attester}`
+					const targetId = `account/${recipient}`
+					const edgeId = `${sourceId}|${targetId}`
 
-					if(!graph.hasEdge(id))
+					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
 						graph.addEdge(
-							`account/${attestation.attester}`,
-							`account/${recipient}`,
+							sourceId,
+							targetId,
 							{
-								id,
+								id: edgeId,
 								label: attestationId,
 								color: hashStringToColor(`schema/${attestation.schemaId}`),
 								size: 3,
@@ -113,14 +115,16 @@
 
 				// Attester → Schema
 				{
-					const id = `account/${attestation.attester}|schema/${attestation.schemaId}`
+					const sourceId = `account/${attestation.attester}`
+					const targetId = `schema/${attestation.schemaId}`
+					const edgeId = `${sourceId}|${targetId}`
 
-					if(!graph.hasEdge(id))
+					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
 						graph.addEdge(
-							`account/${attestation.attester}`,
-							`schema/${attestation.schemaId}`,
+							sourceId,
+							targetId,
 							{
-								id,
+								id: edgeId,
 								label: attestationId,
 							},
 						)
@@ -128,14 +132,16 @@
 
 				// Schema → Recipient
 				{
-					const id = `schema/${attestation.schemaId}|account/${recipient}`
+					const sourceId = `schema/${attestation.schemaId}`
+					const targetId = `account/${recipient}`
+					const edgeId = `${sourceId}|${targetId}`
 
-					if(!graph.hasEdge(id))
+					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
 						graph.addEdge(
-							`schema/${attestation.schemaId}`,
-							`account/${recipient}`,
+							sourceId,
+							targetId,
 							{
-								id,
+								id: edgeId,
 								label: attestationId,
 							},
 						)
