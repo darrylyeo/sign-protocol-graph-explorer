@@ -28,13 +28,16 @@
 	)
 
 	for (const schema of schemas) {
-		graph.addNode(schema.id, {
-			label: schema.name,
-			x: Math.random() * 100,
-			y: Math.random() * 100,
-			size: Math.log(schema.attestationCount) * 5,
-			color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
-		})
+		const id = `schema/${schema.id}`
+
+		if(!graph.hasNode(id))
+			graph.addNode(id, {
+				label: schema.name,
+				x: Math.random() * 100,
+				y: Math.random() * 100,
+				size: Math.log(schema.attestationCount) * 5,
+				color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
+			})
 	}
 
 	let hoveredEdge: string | undefined = $state()
@@ -68,9 +71,11 @@
 	})
 
 	$effect(() => {
-		for (const [address, account] of allAccounts.entries())
-			if(!graph.hasNode(address))
-				graph.addNode(address, {
+		for (const [address, account] of allAccounts.entries()){
+			const id = `account/${address}`
+
+			if(!graph.hasNode(id))
+				graph.addNode(id, {
 					label: address.slice(0, 6) + '…' + address.slice(-4),
 					x: Math.random() * 100,
 					y: Math.random() * 100,
@@ -87,12 +92,12 @@
 			for (const recipient of attestation.recipients) {
 				// Attester → Recipient
 				// {
-				// 	const id = `${attestation.attester}/${recipient}`
+				// 	const id = `account/${attestation.attester}|account/${recipient}`
 
 				// 	if(!graph.hasEdge(id))
 				// 		graph.addEdge(
-				// 			attestation.attester,
-				// 			recipient,
+				// 			`account/${attestation.attester}`,
+				// 			`account/${recipient}`,
 				// 			{
 				// 				id,
 				// 				label: attestationId,
@@ -102,12 +107,12 @@
 
 				// Attester → Schema
 				{
-					const id = `${attestation.attester}/${attestationId}`
+					const id = `account/${attestation.attester}|schema/${attestation.schemaId}`
 
 					if(!graph.hasEdge(id))
 						graph.addEdge(
-							attestation.attester,
-							attestation.schemaId,
+							`account/${attestation.attester}`,
+							`schema/${attestation.schemaId}`,
 							{
 								id,
 								label: attestationId,
@@ -117,12 +122,12 @@
 
 				// Schema → Recipient
 				{
-					const id = `${attestation.schemaId}/${recipient}`
+					const id = `schema/${attestation.schemaId}|account/${recipient}`
 
 					if(!graph.hasEdge(id))
 						graph.addEdge(
-							attestation.schemaId,
-							recipient,
+							`schema/${attestation.schemaId}`,
+							`account/${recipient}`,
 							{
 								id,
 								label: attestationId,
@@ -151,8 +156,8 @@
 			{graph}
 			bind:hoveredEdge
 			bind:hoveredNode
-			onNodeClick={(node) => {
-				goto(`/schema/${node}`)
+			onNodeClick={(nodeId) => {
+				goto(`/${nodeId}`)
 			}}
 		/>
 	</div>
