@@ -9,7 +9,7 @@ export const chainIdToName = {
 	'ipfs': 'IPFS',
 } as const
 
-type SchemaWithSummary = {
+export type SchemaWithSummary = {
 	id: string,
 	mode: string,
 	name: string,
@@ -22,7 +22,7 @@ type SchemaWithSummary = {
 	attestationCount: number,
 }
 
-type Schema = {
+export type Schema = {
 	id: string,
 	mode: string,
 	name: string,
@@ -42,6 +42,18 @@ type Schema = {
 		name: string,
 		type: string,
 	}[],
+}
+
+export type Attestation = {
+	id: string,
+	mode: string,
+	chainType: string,
+	chainId: string,
+	attestationId: `0x${string}`
+	schemaId: `0x${string}`,
+	attester: `0x${string}`,
+	attestTimestamp: number,
+	recipients: `0x${string}`[],
 }
 
 
@@ -112,17 +124,7 @@ export const getAttestations = async ({
 	await get<
 		{
 			total: number,
-			rows: {
-				id: string,
-				mode: string,
-				chainType: string,
-				chainId: string,
-				attestationId: `0x${string}`
-				schemaId: `0x${string}`,
-				attester: `0x${string}`,
-				attestTimestamp: number,
-				recipients: `0x${string}`[],
-			}[],
+			rows: Attestation[],
 		}
 	>(`attestations`, {
 		schemaId,
