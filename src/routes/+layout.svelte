@@ -17,6 +17,10 @@
 	} = data
 
 
+	// Functions
+	import { hashStringToColor } from '$/utils/hashStringToColor'
+
+
 	// Internal state
 	import Graph from 'graphology'
 
@@ -36,7 +40,7 @@
 				x: Math.random() * 100,
 				y: Math.random() * 100,
 				size: Math.log(schema.attestationCount) * 5,
-				color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
+				color: hashStringToColor(id),
 			})
 	}
 
@@ -80,7 +84,7 @@
 					x: Math.random() * 100,
 					y: Math.random() * 100,
 					size: 10,
-					color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
+					color: hashStringToColor(id),
 				})
 		}
 
@@ -91,19 +95,21 @@
 		for (const [attestationId, attestation] of allAttestations.entries()) {
 			for (const recipient of attestation.recipients) {
 				// Attester → Recipient
-				// {
-				// 	const id = `account/${attestation.attester}|account/${recipient}`
+				{
+					const id = `account/${attestation.attester}|account/${recipient}`
 
-				// 	if(!graph.hasEdge(id))
-				// 		graph.addEdge(
-				// 			`account/${attestation.attester}`,
-				// 			`account/${recipient}`,
-				// 			{
-				// 				id,
-				// 				label: attestationId,
-				// 			},
-				// 		)
-				// }
+					if(!graph.hasEdge(id))
+						graph.addEdge(
+							`account/${attestation.attester}`,
+							`account/${recipient}`,
+							{
+								id,
+								label: attestationId,
+								color: hashStringToColor(`schema/${attestation.schemaId}`),
+								size: 3,
+							},
+						)
+				}
 
 				// Attester → Schema
 				{
