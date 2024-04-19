@@ -45,6 +45,9 @@
 			{graph}
 			bind:hoveredEdge
 			bind:hoveredNode
+			onNodeClick={(node) => {
+				goto(`/schema/${node}`)
+			}}
 		/>
 	</div>
 
