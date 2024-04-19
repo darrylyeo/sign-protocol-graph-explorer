@@ -48,14 +48,14 @@
 		/>
 	</div>
 
-	<div>
-		<section>
-			<h1>Attestation Graph</h1>
-			powered by Sign
-		</section>
-	</div>
+	<header>
+		<h1>Attestation Graph</h1>
+		powered by Sign
+	</header>
 
-	{@render children()}
+	<article>
+		{@render children()}
+	</article>
 </main>
 
 
@@ -89,8 +89,20 @@
 		}
 	}
 
-	section {
-		padding: 1rem;
+	header {
+		place-self: start start;
+
 		backdrop-filter: blur(10px);
+
+		padding: 1rem;
+	}
+
+	article {
+		place-self: end start;
+
+		background-color: #fffdef6f;
+		backdrop-filter: blur(10px);
+
+		padding: 1rem;
 	}
 </style>
