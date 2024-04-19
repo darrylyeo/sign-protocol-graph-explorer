@@ -139,6 +139,7 @@
 
 	$effect(() => {
 		renderer?.setGraph(graph)
+		renderer?.refresh()
 	})
 
 	$effect(() => {

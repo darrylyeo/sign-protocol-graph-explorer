@@ -1,6 +1,6 @@
 <script lang="ts">
-	// Libraries
-	import Graph from 'graphology'
+	// Types
+	import type { Attestation } from '$/api/sign.js'
 	
 
 	// Context
@@ -18,7 +18,14 @@
 
 
 	// Internal state
-	let graph = new Graph()
+	import Graph from 'graphology'
+
+	let graph = $state(
+		new Graph({
+			multi: true,
+			allowSelfLoops: true,
+		})
+	)
 
 	for (const schema of schemas) {
 		graph.addNode(schema.id, {
@@ -32,6 +39,101 @@
 
 	let hoveredEdge: string | undefined = $state()
 	let hoveredNode: string | undefined = $state()
+
+
+	import { Map } from 'svelte/reactivity'
+
+	let allAccounts = $state(
+		new Map<`0x${string}`, {
+			address: `0x${string}`,
+		}>()
+	)
+	let allAttestations = $state(
+		new Map<string, Attestation>()
+	)
+
+	$effect(() => {
+		if($page.data.attestations)
+			for (const attestation of $page.data.attestations as Attestation[]) {
+				allAttestations.set(attestation.id, attestation)
+				
+				for (const address of [
+					attestation.attester,
+					...attestation.recipients
+				])
+					allAccounts.set(address, {
+						address,
+					})
+			}
+	})
+
+	$effect(() => {
+		for (const [address, account] of allAccounts.entries())
+			if(!graph.hasNode(address))
+				graph.addNode(address, {
+					label: address.slice(0, 6) + '…' + address.slice(-4),
+					x: Math.random() * 100,
+					y: Math.random() * 100,
+					size: 10,
+					color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
+				})
+		}
+
+		graph = graph
+	})
+
+	$effect(() => {
+		for (const [attestationId, attestation] of allAttestations.entries()) {
+			for (const recipient of attestation.recipients) {
+				// Attester → Recipient
+				// {
+				// 	const id = `${attestation.attester}/${recipient}`
+
+				// 	if(!graph.hasEdge(id))
+				// 		graph.addEdge(
+				// 			attestation.attester,
+				// 			recipient,
+				// 			{
+				// 				id,
+				// 				label: attestationId,
+				// 			},
+				// 		)
+				// }
+
+				// Attester → Schema
+				{
+					const id = `${attestation.attester}/${attestationId}`
+
+					if(!graph.hasEdge(id))
+						graph.addEdge(
+							attestation.attester,
+							attestation.schemaId,
+							{
+								id,
+								label: attestationId,
+							},
+						)
+				}
+
+				// Schema → Recipient
+				{
+					const id = `${attestation.schemaId}/${recipient}`
+
+					if(!graph.hasEdge(id))
+						graph.addEdge(
+							attestation.schemaId,
+							recipient,
+							{
+								id,
+								label: attestationId,
+							},
+						)
+				}
+			}
+		}
+
+		graph = graph
+	})
 
 
 	// Actions
