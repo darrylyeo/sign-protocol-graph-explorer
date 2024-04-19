@@ -1,4 +1,14 @@
-// Types
+// Types/constants
+export const chainIdToName = {
+	1: 'Ethereum',
+	137: 'Polygon',
+	204: 'opBNB Mainnet',
+	7000: 'ZetaChain',
+	8453: 'Base',
+	'arweave': 'Arweave',
+	'ipfs': 'IPFS',
+} as const
+
 type SchemaWithSummary = {
 	id: string,
 	mode: string,
@@ -6,7 +16,7 @@ type SchemaWithSummary = {
 	description: string,
 	registrant: `0x${string}`,
 	chainType: 'offchain' | 'onchain',
-	chainId: 'arweave' | 'ethereum',
+	chainId: keyof typeof chainIdToName,
 	schemaId: string,
 	transactionHash: string,
 	attestationCount: number,
@@ -20,7 +30,7 @@ type Schema = {
 	registrant: `0x${string}`,
 	registerTimestamp: number,
 	chainType: 'offchain' | 'onchain',
-	chainId: 'arweave' | 'ethereum',
+	chainId: keyof typeof chainIdToName,
 	schemaId: string,
 	revocable: boolean,
 	maxValidFor: number,
