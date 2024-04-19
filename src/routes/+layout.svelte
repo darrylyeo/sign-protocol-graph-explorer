@@ -192,7 +192,7 @@
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
-		border: none;
+		/* border: none; */
 	}
 
 	:global(:root) {
@@ -200,10 +200,11 @@
 		font-family: sans-serif;
 		background-color: #FEF7F2;
 		color: #000;
-
+		
 		@media (prefers-color-scheme: dark) {
-			background-color: #321;
-			color: #fff;
+			filter: invert();
+			/* background-color: #321;
+			color: #fff; */
 		}
 	}
 
