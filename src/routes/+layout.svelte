@@ -32,15 +32,15 @@
 	)
 
 	for (const schema of schemas) {
-		const id = `schema/${schema.id}`
+		const nodeId = `schema/${schema.id}`
 
-		if(!graph.hasNode(id))
-			graph.addNode(id, {
+		if(!graph.hasNode(nodeId))
+			graph.addNode(nodeId, {
 				label: schema.name,
 				x: Math.random() * 100,
 				y: Math.random() * 100,
 				size: Math.log(schema.attestationCount) * 5,
-				color: hashStringToColor(id),
+				color: hashStringToColor(nodeId),
 			})
 	}
 
@@ -76,15 +76,15 @@
 
 	$effect(() => {
 		for (const [address, account] of allAccounts.entries()){
-			const id = `account/${address}`
+			const nodeId = `account/${address}`
 
-			if(!graph.hasNode(id))
-				graph.addNode(id, {
+			if(!graph.hasNode(nodeId))
+				graph.addNode(nodeId, {
 					label: address.slice(0, 6) + '…' + address.slice(-4),
 					x: Math.random() * 100,
 					y: Math.random() * 100,
 					size: 10,
-					color: hashStringToColor(id),
+					color: hashStringToColor(nodeId),
 				})
 		}
 
