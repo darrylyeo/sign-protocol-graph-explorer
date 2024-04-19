@@ -151,7 +151,9 @@
 
 
 <main>
-	<div>
+	<div
+		style:cursor={hoveredNode || hoveredEdge ? 'pointer' : undefined}
+	>
 		<SigmaGraph
 			{graph}
 			bind:hoveredEdge
