@@ -34,6 +34,10 @@
 	let hoveredNode: string | undefined = $state()
 
 
+	// Actions
+	import { goto } from '$app/navigation'
+
+
 	// Components
 	import SigmaGraph from '$/components/SigmaGraph.svelte'
 </script>
@@ -90,22 +94,22 @@
 		& > * {
 			grid-area: stack;
 		}
-	}
 
-	header {
-		place-self: start start;
+		& > header {
+			place-self: start start;
 
-		backdrop-filter: blur(10px);
+			backdrop-filter: blur(10px);
 
-		padding: 1rem;
-	}
+			padding: 1rem;
+		}
 
-	article {
-		place-self: end start;
+		& > article {
+			place-self: end start;
 
-		background-color: #fffdef6f;
-		backdrop-filter: blur(10px);
+			background-color: #fffdef6f;
+			backdrop-filter: blur(10px);
 
-		padding: 1rem;
+			padding: 1rem;
+		}
 	}
 </style>
