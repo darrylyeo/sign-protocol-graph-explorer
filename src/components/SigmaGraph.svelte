@@ -16,10 +16,12 @@
 		})
 	})
 
-	let ForceSupervisor: typeof import('graphology-layout-force/worker').default | undefined = $state(undefined)
+	// let ForceSupervisor: typeof import('graphology-layout-force/worker').default | undefined = $state(undefined)
+	let ForceSupervisor: typeof import('graphology-layout-forceatlas2/worker').default | undefined = $state(undefined)
 
 	$effect(() => {
-		import('graphology-layout-force/worker').then(module => {
+		// import('graphology-layout-force/worker').then(module => {
+		import('graphology-layout-forceatlas2/worker').then(module => {
 			ForceSupervisor = module.default
 		})
 	})
@@ -142,7 +144,21 @@
 	$effect(() => {
 		if(!(enableForce && ForceSupervisor && graph)) return
 
-		const layout = new ForceSupervisor(graph)
+		const layout = new ForceSupervisor(graph, {
+			settings: {
+				adjustSizes: true,
+				gravity: 0.01,
+				scalingRatio: 0.25,
+				strongGravityMode: true,
+				slowDown: 1,
+				outboundAttractionDistribution: false,
+				linLogMode: false,
+				edgeWeightInfluence: 10,
+				barnesHutOptimize: true,
+				barnesHutTheta: 0.6,
+			},
+		})
+
 		layout.start()
 
 		return () => {
