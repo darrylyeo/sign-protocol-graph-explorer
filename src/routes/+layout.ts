@@ -1,5 +1,5 @@
 // Functions
-import { getTopSchemas } from '$/api/sign'
+import { getSchemas } from '$/api/sign'
 
 
 // Data
@@ -9,7 +9,13 @@ export const load: LayoutLoad = async () => {
 	const [
 		schemas,
 	] = await Promise.all([
-		getTopSchemas(),
+		Promise.all(
+			Array.from(
+				{ length: 2 }, 
+				(_, index) => getSchemas({ page: index + 1 }),
+			),
+		)
+			.then((pages) => pages.flat()),
 	])
 
 	return {

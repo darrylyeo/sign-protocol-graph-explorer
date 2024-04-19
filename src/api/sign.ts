@@ -48,6 +48,21 @@ export const getTrendingSchemas = async () => (
 		.then(data => data.rows)
 )
 
+export const getSchemas = async ({
+	page,
+}: {
+	page: number
+}) => (
+	await get<
+		{
+			rows: Schema[],
+		}
+	>(`schemas?${new URLSearchParams({
+		page: String(page),
+	})}`)
+		.then(data => data.rows)
+)
+
 export const getSchema = async (
 	schemaId: string
 ) => (
