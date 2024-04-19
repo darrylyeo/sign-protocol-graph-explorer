@@ -30,6 +30,15 @@ const get = async <T>(
 
 
 // API
+export const getTopSchemas = async () => (
+	await get<
+		{
+			rows: Schema[],
+		}
+	>(`top-schemas`)
+		.then(data => data.rows)
+)
+
 export const getTrendingSchemas = async () => (
 	await get<
 		{
