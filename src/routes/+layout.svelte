@@ -39,7 +39,7 @@
 				label: schema.name,
 				x: Math.random() * 100,
 				y: Math.random() * 100,
-				size: Math.log(schema.attestationCount) * 5,
+				size: 25 + Math.log(schema.attestationCount) * 3,
 				color: hashStringToColor(nodeId),
 			})
 	}
