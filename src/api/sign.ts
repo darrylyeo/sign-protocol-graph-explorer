@@ -1,5 +1,5 @@
 // Types
-type Schema = {
+type SchemaWithSummary = {
 	id: string,
 	mode: string,
 	name: string,
@@ -10,6 +10,28 @@ type Schema = {
 	schemaId: string,
 	transactionHash: string,
 	attestationCount: number,
+}
+
+type Schema = {
+	id: string,
+	mode: string,
+	name: string,
+	description: string,
+	registrant: `0x${string}`,
+	registerTimestamp: number,
+	chainType: 'offchain' | 'onchain',
+	chainId: 'arweave' | 'ethereum',
+	schemaId: string,
+	revocable: boolean,
+	maxValidFor: number,
+	transactionHash: string,
+	dataLocation: 'arweave',
+	originalData: string,
+	hook: string,
+	data: {
+		name: string,
+		type: string,
+	}[],
 }
 
 
@@ -33,7 +55,7 @@ const get = async <T>(
 export const getTopSchemas = async () => (
 	await get<
 		{
-			rows: Schema[],
+			rows: SchemaWithSummary[],
 		}
 	>(`top-schemas`)
 		.then(data => data.rows)
@@ -42,7 +64,7 @@ export const getTopSchemas = async () => (
 export const getTrendingSchemas = async () => (
 	await get<
 		{
-			rows: Schema[],
+			rows: SchemaWithSummary[],
 		}
 	>(`trending-schemas`)
 		.then(data => data.rows)
@@ -55,7 +77,7 @@ export const getSchemas = async ({
 }) => (
 	await get<
 		{
-			rows: Schema[],
+			rows: SchemaWithSummary[],
 		}
 	>(`schemas?${new URLSearchParams({
 		page: String(page),
