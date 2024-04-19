@@ -47,9 +47,10 @@ type Schema = {
 
 // Functions
 const get = async <T>(
-	endpoint: string
+	endpoint: string,
+	params?: Record<string, string | number>,
 ) => (
-	await fetch(`https://scan.sign.global/api/scan/${endpoint}`)
+	await fetch(`https://scan.sign.global/api/scan/${endpoint}?${new URLSearchParams(params as Record<string, string>)}`)
 		.then((response) => response.json())
 		.then(result => {
 			if(result.message !== 'ok') {
@@ -89,9 +90,9 @@ export const getSchemas = async ({
 		{
 			rows: SchemaWithSummary[],
 		}
-	>(`schemas?${new URLSearchParams({
-		page: String(page),
-	})}`)
+	>(`schemas`, {
+		page,
+	})
 		.then(data => data.rows)
 )
 
@@ -123,9 +124,9 @@ export const getAttestations = async ({
 				recipients: `0x${string}`[],
 			}[],
 		}
-	>(`attestations?${new URLSearchParams({
+	>(`attestations`, {
 		schemaId,
-		page: String(page),
-	})}`)
+		page,
+	})
 		.then(data => data.rows)
 )
