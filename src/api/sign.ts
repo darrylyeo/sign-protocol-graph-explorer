@@ -100,3 +100,32 @@ export const getSchema = async (
 ) => (
 	await get<Schema>(`schemas/${schemaId}`)
 )
+
+export const getAttestations = async ({
+	schemaId,
+	page,
+}: {
+	schemaId: string,
+	page: number,
+}) => (
+	await get<
+		{
+			total: number,
+			rows: {
+				id: string,
+				mode: string,
+				chainType: string,
+				chainId: string,
+				attestationId: `0x${string}`
+				schemaId: `0x${string}`,
+				attester: `0x${string}`,
+				attestTimestamp: number,
+				recipients: `0x${string}`[],
+			}[],
+		}
+	>(`attestations?${new URLSearchParams({
+		schemaId,
+		page: String(page),
+	})}`)
+		.then(data => data.rows)
+)

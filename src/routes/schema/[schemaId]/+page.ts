@@ -1,5 +1,5 @@
 // Functions
-import { getSchema } from '$/api/sign'
+import { getSchema, getAttestations } from '$/api/sign'
 
 
 // Data
@@ -10,11 +10,21 @@ export const load: PageLoad = async ({
 }) => {
 	const [
 		schema,
+		attestations,
 	] = await Promise.all([
 		getSchema(schemaId),
+
+		Promise.all(
+			Array.from(
+				{ length: 2 }, 
+				(_, index) => getAttestations({ schemaId, page: index + 1 }),
+			),
+		)
+			.then((pages) => pages.flat()),
 	])
 
 	return {
 		schema,
+		attestations,
 	}
 }
