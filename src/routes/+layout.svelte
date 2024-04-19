@@ -25,7 +25,7 @@
 			label: schema.name,
 			x: Math.random() * 100,
 			y: Math.random() * 100,
-			size: 10,
+			size: Math.log(schema.attestationCount) * 5,
 			color: `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`,
 		})
 	}
