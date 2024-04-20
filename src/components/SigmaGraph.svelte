@@ -34,6 +34,7 @@
 		graph,
 
 		enableForce = true,
+		arrangeParallelEdges = true,
 
 		edgeReducer,
 		nodeReducer,
@@ -51,6 +52,7 @@
 		graph: Graph,
 
 		enableForce?: boolean,
+		arrangeParallelEdges?: boolean,
 
 		edgeReducer?: (edge: string, data: Attributes) => Partial<DisplayData>,
 		nodeReducer?: (node: string, data: Attributes) => Partial<DisplayData>,
@@ -147,6 +149,37 @@
 	})
 
 	$effect(() => {
+		if(arrangeParallelEdges && EdgeCurveModule){
+			EdgeCurveModule.indexParallelEdgesIndex(graph, { edgeIndexAttribute: 'parallelIndex', edgeMaxIndexAttribute: 'parallelMaxIndex' })
+
+			// Adapt types and curvature of parallel edges for rendering:
+			graph.forEachEdge(
+				(
+					edge,
+					{
+						parallelIndex,
+						parallelMaxIndex,
+					}: { parallelIndex: number; parallelMaxIndex: number } | { parallelIndex?: null; parallelMaxIndex?: null },
+				) => {
+					if (typeof parallelIndex === 'number') {
+						graph.mergeEdgeAttributes(edge, {
+							type: 'curved',
+							curvature: (
+								// -1 to 1
+								parallelIndex / parallelMaxIndex * 2 - 1
+								// 0 to 1
+								// (parallelIndex - 1) / (parallelMaxIndex - 1)
+							) * (
+								1
+							)
+						})
+					} else {
+						graph.setEdgeAttribute(edge, 'type', 'straight');
+					}
+				},
+			)
+		}
+
 		renderer?.setGraph(graph)
 		renderer?.refresh()
 	})
