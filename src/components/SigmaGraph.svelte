@@ -20,9 +20,10 @@
 	let EdgeArrowProgram: typeof import('sigma/rendering').EdgeArrowProgram | undefined = $state(undefined)
 	$effect(() => { import('sigma/rendering').then(module => { EdgeArrowProgram = module.EdgeArrowProgram }) })
 
-	let EdgeCurveProgram: typeof import('@sigma/edge-curve').default | undefined = $state(undefined)
-	$effect(() => { import('@sigma/edge-curve').then(module => { EdgeCurveProgram = module.default }) })
+	let EdgeCurveModule: typeof import('@sigma/edge-curve') | undefined = $state(undefined)
+	$effect(() => { import('@sigma/edge-curve').then(module => { EdgeCurveModule = module }) })
 
+	import forceAtlas2 from 'graphology-layout-forceatlas2'
 
 	// Context
 	import { browser } from '$app/environment'
@@ -72,7 +73,7 @@
 
 	// (Derived)
 	let renderer: Sigma | undefined = $derived.by(() => {
-		if(browser && graph && container && Sigma && EdgeArrowProgram && EdgeCurveProgram){
+		if(browser && graph && container && Sigma && EdgeArrowProgram && EdgeCurveModule){
 			const renderer = new Sigma(
 				graph,
 				container,
@@ -81,7 +82,7 @@
 					renderEdgeLabels: true,
 					edgeProgramClasses: {
 						straight: EdgeArrowProgram,
-						curved: EdgeCurveProgram,
+						curved: EdgeCurveModule.EdgeCurvedArrowProgram,
 					},
 				},
 			)
