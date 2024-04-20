@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types
-	import type { Attestation } from '$/api/sign.js'
+	import type { Attestation, Schema } from '$/api/sign.js'
 	
 
 	// Context
@@ -50,6 +50,10 @@
 
 	import { Map } from 'svelte/reactivity'
 
+	let allSchemas = $state(
+		new Map<string, Schema>()
+	)
+
 	let allAccounts = $state(
 		new Map<`0x${string}`, {
 			address: `0x${string}`,
@@ -58,6 +62,13 @@
 	let allAttestations = $state(
 		new Map<string, Attestation>()
 	)
+
+	$effect(() => {
+		if($page.data.schemas)
+			for (const schema of $page.data.schemas as Schema[]) {
+				allSchemas.set(schema.id, schema)
+			}
+	})
 
 	$effect(() => {
 		if($page.data.attestations)
@@ -106,7 +117,7 @@
 							targetId,
 							{
 								id: edgeId,
-								label: attestationId,
+								label: allSchemas.get(attestation.schemaId)?.name ?? attestationId,
 								color: hashStringToColor(`schema/${attestation.schemaId}`),
 								size: 3,
 							},
