@@ -150,31 +150,42 @@
 
 	$effect(() => {
 		if(arrangeParallelEdges && EdgeCurveModule){
-			EdgeCurveModule.indexParallelEdgesIndex(graph, { edgeIndexAttribute: 'parallelIndex', edgeMaxIndexAttribute: 'parallelMaxIndex' })
+			EdgeCurveModule.indexParallelEdgesIndex(graph, { edgeIndexAttribute: 'edgeIndex', edgeMaxIndexAttribute: 'edgeCount' })
 
 			// Adapt types and curvature of parallel edges for rendering:
 			graph.forEachEdge(
 				(
 					edge,
 					{
-						parallelIndex,
-						parallelMaxIndex,
-					}: { parallelIndex: number; parallelMaxIndex: number } | { parallelIndex?: null; parallelMaxIndex?: null },
+						edgeIndex,
+						edgeCount,
+					}: { edgeIndex: number; edgeCount: number } | { edgeIndex?: null; edgeCount?: null },
 				) => {
-					if (typeof parallelIndex === 'number') {
-						graph.mergeEdgeAttributes(edge, {
-							type: 'curved',
-							curvature: (
-								// -1 to 1
-								parallelIndex / parallelMaxIndex * 2 - 1
-								// 0 to 1
-								// (parallelIndex - 1) / (parallelMaxIndex - 1)
-							) * (
-								1
-							)
-						})
+					if (typeof edgeIndex === 'number') {
+						const curvature = (
+							// [-1, 1]
+							edgeIndex / (edgeCount - 1) * 2 - 1
+							// [0, 1]
+							// edgeIndex / (edgeCount - 1)
+							// (0, 1]
+							// (edgeIndex + 1) / (edgeCount)
+						) * (
+							1 - Math.exp(-0.1 * edgeCount)
+						)
+
+						if(curvature !== 0)
+							graph.mergeEdgeAttributes(edge, {
+								type: 'curved',
+								curvature,
+							})
+						else
+							graph.mergeEdgeAttributes(edge, {
+								type: 'straight',
+							})
 					} else {
-						graph.setEdgeAttribute(edge, 'type', 'straight');
+						graph.mergeEdgeAttributes(edge, {
+							type: 'straight',
+						})
 					}
 				},
 			)
