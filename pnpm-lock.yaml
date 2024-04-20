@@ -8,6 +8,9 @@ dependencies:
   '@sigma/edge-curve':
     specifier: 3.0.0-beta.6
     version: 3.0.0-beta.6(sigma@3.0.0-beta.17)
+  '@sigma/node-image':
+    specifier: 3.0.0-beta.9
+    version: 3.0.0-beta.9(sigma@3.0.0-beta.17)
   graphology:
     specifier: ^0.25.4
     version: 0.25.4(graphology-types@0.24.7)
@@ -559,6 +562,14 @@ packages:
 
   /@sigma/edge-curve@3.0.0-beta.6(sigma@3.0.0-beta.17):
     resolution: {integrity: sha512-GNUD6VrtVTqG26a56X4s4OSjWHdDnO+OrLYJ0ygu7TFXIgXuQ5S7jwsJq9oJ4FQRCdJ71/TpP5dP58CKm7axRw==}
+    peerDependencies:
+      sigma: '>=3.0.0-beta.10'
+    dependencies:
+      sigma: 3.0.0-beta.17(graphology-types@0.24.7)
+    dev: false
+
+  /@sigma/node-image@3.0.0-beta.9(sigma@3.0.0-beta.17):
+    resolution: {integrity: sha512-VNFqXNs3wvHLozUq+WwWMRSQgy/+VUn90+SUlEqtTzFa2OHzcmBjzN9UjUY/jo1HQmmx7wBpv8tbI/KTy/f+yA==}
     peerDependencies:
       sigma: '>=3.0.0-beta.10'
     dependencies:

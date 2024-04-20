@@ -17,8 +17,11 @@
 	let ForceSupervisor: typeof import('graphology-layout-forceatlas2/worker').default | undefined = $state(undefined)
 	$effect(() => { import('graphology-layout-forceatlas2/worker').then(module => { ForceSupervisor = module.default }) })
 
-	let EdgeArrowProgram: typeof import('sigma/rendering').EdgeArrowProgram | undefined = $state(undefined)
-	$effect(() => { import('sigma/rendering').then(module => { EdgeArrowProgram = module.EdgeArrowProgram }) })
+	let SigmaRenderingModule: typeof import('sigma/rendering') | undefined = $state(undefined)
+	$effect(() => { import('sigma/rendering').then(module => { SigmaRenderingModule = module }) })
+
+	let NodeImageModule: typeof import('@sigma/node-image') | undefined = $state(undefined)
+	$effect(() => { import('@sigma/node-image').then(module => { NodeImageModule = module }) })
 
 	let EdgeCurveModule: typeof import('@sigma/edge-curve') | undefined = $state(undefined)
 	$effect(() => { import('@sigma/edge-curve').then(module => { EdgeCurveModule = module }) })
@@ -75,16 +78,21 @@
 
 	// (Derived)
 	let renderer: Sigma | undefined = $derived.by(() => {
-		if(browser && graph && container && Sigma && EdgeArrowProgram && EdgeCurveModule){
+		if(browser && graph && container && Sigma && SigmaRenderingModule && NodeImageModule && EdgeCurveModule){
 			const renderer = new Sigma(
 				graph,
 				container,
 				{
 					defaultEdgeType: 'curved',
 					renderEdgeLabels: true,
+					nodeProgramClasses: {
+						'circle': SigmaRenderingModule.NodeCircleProgram,
+						'point': SigmaRenderingModule.NodePointProgram,
+						'image': NodeImageModule.NodeImageProgram,
+					},
 					edgeProgramClasses: {
-						straight: EdgeArrowProgram,
-						curved: EdgeCurveModule.EdgeCurvedArrowProgram,
+						'straight': SigmaRenderingModule.EdgeArrowProgram,
+						'curved': EdgeCurveModule.EdgeCurvedArrowProgram,
 					},
 				},
 			)
