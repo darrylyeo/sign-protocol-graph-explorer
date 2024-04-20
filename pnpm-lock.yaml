@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@sigma/edge-curve':
+    specifier: 3.0.0-beta.6
+    version: 3.0.0-beta.6(sigma@3.0.0-beta.17)
   graphology:
     specifier: ^0.25.4
     version: 0.25.4(graphology-types@0.24.7)
@@ -553,6 +556,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@sigma/edge-curve@3.0.0-beta.6(sigma@3.0.0-beta.17):
+    resolution: {integrity: sha512-GNUD6VrtVTqG26a56X4s4OSjWHdDnO+OrLYJ0ygu7TFXIgXuQ5S7jwsJq9oJ4FQRCdJ71/TpP5dP58CKm7axRw==}
+    peerDependencies:
+      sigma: '>=3.0.0-beta.10'
+    dependencies:
+      sigma: 3.0.0-beta.17(graphology-types@0.24.7)
+    dev: false
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}

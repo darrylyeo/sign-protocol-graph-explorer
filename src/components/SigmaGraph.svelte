@@ -9,22 +9,19 @@
 	import type { Sigma } from 'sigma'
 
 	let Sigma: typeof import('sigma').Sigma | undefined = $state(undefined)
-
-	$effect(() => {
-		import('sigma').then(module => {
-			Sigma = module.default
-		})
-	})
+	$effect(() => { import('sigma').then(module => { Sigma = module.default }) })
 
 	// let ForceSupervisor: typeof import('graphology-layout-force/worker').default | undefined = $state(undefined)
-	let ForceSupervisor: typeof import('graphology-layout-forceatlas2/worker').default | undefined = $state(undefined)
+	// $effect(() => { import('graphology-layout-force/worker').then(module => { ForceSupervisor = module.default }) })
 
-	$effect(() => {
-		// import('graphology-layout-force/worker').then(module => {
-		import('graphology-layout-forceatlas2/worker').then(module => {
-			ForceSupervisor = module.default
-		})
-	})
+	let ForceSupervisor: typeof import('graphology-layout-forceatlas2/worker').default | undefined = $state(undefined)
+	$effect(() => { import('graphology-layout-forceatlas2/worker').then(module => { ForceSupervisor = module.default }) })
+
+	let EdgeArrowProgram: typeof import('sigma/rendering').EdgeArrowProgram | undefined = $state(undefined)
+	$effect(() => { import('sigma/rendering').then(module => { EdgeArrowProgram = module.EdgeArrowProgram }) })
+
+	let EdgeCurveProgram: typeof import('@sigma/edge-curve').default | undefined = $state(undefined)
+	$effect(() => { import('@sigma/edge-curve').then(module => { EdgeCurveProgram = module.default }) })
 
 
 	// Context
@@ -75,8 +72,19 @@
 
 	// (Derived)
 	let renderer: Sigma | undefined = $derived.by(() => {
-		if(browser && graph && container && Sigma){
-			const renderer = new Sigma(graph, container)
+		if(browser && graph && container && Sigma && EdgeArrowProgram && EdgeCurveProgram){
+			const renderer = new Sigma(
+				graph,
+				container,
+				{
+					defaultEdgeType: 'curved',
+					renderEdgeLabels: true,
+					edgeProgramClasses: {
+						straight: EdgeArrowProgram,
+						curved: EdgeCurveProgram,
+					},
+				},
+			)
 			return renderer
 		}
 	})
