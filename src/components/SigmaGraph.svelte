@@ -126,15 +126,6 @@
 	})
 
 	$effect(() => {
-		if(renderer && graph){
-			const _renderer = renderer
-
-			_renderer.setGraph(graph)
-			_renderer.refresh()
-		}
-	})
-
-	$effect(() => {
 		if(renderer && edgeReducer){
 			renderer.setSetting('edgeReducer', edgeReducer)
 			renderer.refresh()
@@ -189,7 +180,7 @@
 	})
 
 	$effect(() => {
-		if(arrangeParallelEdges && EdgeCurveModule){
+		if(arrangeParallelEdges && EdgeCurveModule && graph){
 			EdgeCurveModule.indexParallelEdgesIndex(graph, { edgeIndexAttribute: 'edgeIndex', edgeMaxIndexAttribute: 'edgeCount' })
 
 			// Adapt types and curvature of parallel edges for rendering:
@@ -245,7 +236,12 @@
 			)
 		}
 
-		graph = graph
+		if(renderer && graph){
+			const _renderer = renderer
+
+			_renderer.setGraph(graph)
+			_renderer.refresh()
+		}
 	})
 
 
