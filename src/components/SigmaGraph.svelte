@@ -149,7 +149,7 @@
 			onEdgeClick?.(edge)
 		})
 
-		_renderer.on('leaveEdge', ({ edge }) => {
+		_renderer.on('enterEdge', ({ edge }) => {
 			console.log('leaveEdge', 'edge', edge)
 			onEdgeEnter?.(edge)
 			hoveredEdge = edge
