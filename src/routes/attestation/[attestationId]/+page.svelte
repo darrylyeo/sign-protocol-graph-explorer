@@ -37,7 +37,7 @@
 				{ name: 'Revoke reason', description: attestation.revokeReason },
 				attestation.revokeTransactionHash && { name: 'Revoke transaction', description: attestation.revokeTransactionHash },
 			] : [],
-			{ name: 'Data', description: JSON.stringify(JSON.parse(attestation.data), null, '\t'), format: 'code' },
+			{ name: 'Data', description: (() => { try { return JSON.stringify(JSON.parse(attestation.data), null, '\t') } catch { return attestation.data } })(), format: 'code' },
 		].filter(Boolean) as attribute}
 			<dt>{attribute.name}</dt>
 			<dd data-format={attribute.format}>
