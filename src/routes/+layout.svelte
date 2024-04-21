@@ -102,14 +102,16 @@
 	for (const schema of schemas) {
 		const nodeId = `schema/${schema.id}`
 
-		if(!graph.hasNode(nodeId)) graph.mergeNode(nodeId, {
+		graph.mergeNode(nodeId, {
 			type: 'image',
 			image: networkImages[schema.chainId],
 			label: schema.name,
-			x: Math.random() * 100,
-			y: Math.random() * 100,
 			size: 25 + Math.log(schema.attestationCount) * 3,
 			color: hashStringToColor(nodeId),
+			...!graph.hasNode(nodeId) && {
+				x: Math.random() * 100,
+				y: Math.random() * 100,
+			},
 		})
 	}
 
@@ -117,12 +119,14 @@
 		for (const [address, account] of allAccounts.entries()){
 			const nodeId = `account/${address}`
 
-			if(!graph.hasNode(nodeId)) graph.mergeNode(nodeId, {
+			graph.mergeNode(nodeId, {
 				label: account.ensName ?? (address.slice(0, 6) + '…' + address.slice(-4)),
-				x: Math.random() * 100,
-				y: Math.random() * 100,
 				size: 12,
 				color: hashStringToColor(nodeId),
+				...!graph.hasNode(nodeId) && {
+					x: Math.random() * 100,
+					y: Math.random() * 100,
+				},
 			})
 		}
 
