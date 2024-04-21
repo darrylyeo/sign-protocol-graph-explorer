@@ -277,6 +277,21 @@
 	let searchEntityType: EntityType = $state(EntityType.Account)
 	let searchEntityId = $state('')
 
+	$effect(() => {
+		if($page.params.accountId){
+			searchEntityType = EntityType.Account
+			searchEntityId = $page.params.accountId
+		}
+		else if($page.params.schemaId){
+			searchEntityType = EntityType.Schema
+			searchEntityId = $page.params.schemaId
+		}
+		else if($page.params.attestationId){
+			searchEntityType = EntityType.Attestation
+			searchEntityId = $page.params.attestationId
+		}
+	})
+
 
 	// Actions
 	import { goto } from '$app/navigation'
