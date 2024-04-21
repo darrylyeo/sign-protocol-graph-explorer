@@ -117,8 +117,7 @@
 			{
 				const sourceId = attesterNodeId
 				const targetId = schemaNodeId
-				// const edgeId = `${sourceId}|${targetId}`
-				const edgeId = `attestation/${attestationId}|1`
+				const edgeId = `attestation/${attestationId}|${sourceId}|${targetId}`
 
 				graph.mergeEdgeWithKey(
 					edgeId,
@@ -140,8 +139,7 @@
 				{
 					const sourceId = attesterNodeId
 					const targetId = recipientNodeId
-					// const edgeId = `${sourceId}|${targetId}`
-					const edgeId = `attestation/${attestationId}|1`
+					const edgeId = `attestation/${attestationId}|${sourceId}|${targetId}`
 
 					graph.mergeEdgeWithKey(
 						edgeId,
@@ -160,8 +158,7 @@
 				{
 					const sourceId = schemaNodeId
 					const targetId = recipientNodeId
-					// const edgeId = `${sourceId}|${targetId}`
-					const edgeId = `attestation/${attestationId}|2`
+					const edgeId = `attestation/${attestationId}|${sourceId}|${targetId}`
 
 					graph.mergeEdgeWithKey(
 						edgeId,
