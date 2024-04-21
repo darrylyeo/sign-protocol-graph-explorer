@@ -9,7 +9,7 @@ export const chainIdToName = {
 	'ipfs': 'IPFS',
 } as const
 
-export type SchemaWithSummary = {
+export type SchemaSummary = {
 	id: string,
 	mode: string,
 	name: string,
@@ -44,7 +44,7 @@ export type Schema = {
 	}[],
 }
 
-export type Attestation = {
+export type AttestationSummary = {
 	id: string,
 	mode: string,
 	chainType: string,
@@ -78,7 +78,7 @@ const get = async <T>(
 export const getTopSchemas = async () => (
 	await get<
 		{
-			rows: SchemaWithSummary[],
+			rows: SchemaSummary[],
 		}
 	>(`top-schemas`)
 		.then(data => data.rows)
@@ -87,7 +87,7 @@ export const getTopSchemas = async () => (
 export const getTrendingSchemas = async () => (
 	await get<
 		{
-			rows: SchemaWithSummary[],
+			rows: SchemaSummary[],
 		}
 	>(`trending-schemas`)
 		.then(data => data.rows)
@@ -100,7 +100,7 @@ export const getSchemas = async ({
 }) => (
 	await get<
 		{
-			rows: SchemaWithSummary[],
+			rows: SchemaSummary[],
 		}
 	>(`schemas`, {
 		page,
@@ -124,7 +124,7 @@ export const getAttestations = async ({
 	await get<
 		{
 			total: number,
-			rows: Attestation[],
+			rows: AttestationSummary[],
 		}
 	>(`attestations`, {
 		schemaId,

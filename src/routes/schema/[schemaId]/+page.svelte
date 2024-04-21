@@ -14,7 +14,7 @@
 		attestations,
 	} = $derived(data)
 
-	let schemaWithSummary = $derived(
+	let schemaSummary = $derived(
 		schemas.find(_schema => _schema.id === schema.id)
 	)
 </script>
@@ -47,10 +47,10 @@
 
 	<hr>
 
-	{#if schemaWithSummary}
+	{#if schemaSummary}
 		<dl>
 			{#each [
-				{ name: 'Attestations', description: schemaWithSummary.attestationCount },
+				{ name: 'Attestations', description: schemaSummary.attestationCount },
 			] as attribute}
 				<dt>{attribute.name}</dt>
 				<dd>{attribute.description}</dd>

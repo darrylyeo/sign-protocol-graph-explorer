@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types/constants
-	import type { Attestation, Schema } from '$/api/sign.js'
+	import type { AttestationSummary, Schema } from '$/api/sign.js'
 	import { networkImages } from '$/images/images.js'
 	
 
@@ -63,7 +63,7 @@
 		}>()
 	)
 	let allAttestations = $state(
-		new Map<string, Attestation>()
+		new Map<string, AttestationSummary>()
 	)
 
 	$effect(() => {
@@ -75,7 +75,7 @@
 
 	$effect(() => {
 		if($page.data.attestations)
-			for (const attestation of $page.data.attestations as Attestation[]) {
+			for (const attestation of $page.data.attestations as AttestationSummary[]) {
 				allAttestations.set(attestation.id, attestation)
 				
 				for (const address of [
