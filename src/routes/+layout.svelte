@@ -397,6 +397,14 @@
 			</fieldset>
 		</form>
 	{/key}
+
+	<footer
+		transition:scale={{ duration: 300, easing: expoOut, start: 0.5 }}
+	>
+		<a href="https://scan.sign.global" target="_blank">SignScan</a>
+		•
+		<a href="https://github.com/darrylyeo/sign-protocol-graph-explorer" target="_blank">GitHub</a>
+	</footer>
 </main>
 
 
@@ -480,7 +488,8 @@
 		}
 
 		& > article,
-		& > form {
+		& > form,
+		& > footer {
 			margin: 1em;
 			border-radius: 1em;
 			border: 2px solid #0000001a;
@@ -515,6 +524,12 @@
 			& fieldset {
 				display: contents;
 			}
+		}
+
+		& > footer {
+			place-self: end end;
+			transform-origin: right bottom;
+			font-size: 0.9em;
 		}
 
 		.graph {
