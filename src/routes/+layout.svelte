@@ -8,6 +8,12 @@
 		edgeIds?: Set<string>,
 	}
 
+	enum EntityType {
+		Account = 'account',
+		Schema = 'schema',
+		Attestation = 'attestation',
+	}
+
 
 	// Context
 	import { page } from '$app/stores'
@@ -267,6 +273,11 @@
 	)
 
 
+	// (Search form)
+	let searchEntityType: EntityType = $state(EntityType.Account)
+	let searchEntityId = $state('')
+
+
 	// Actions
 	import { goto } from '$app/navigation'
 
@@ -322,6 +333,37 @@
 	<article>
 		{@render children()}
 	</article>
+
+	<form
+		onsubmit={async (event) => {
+			event.preventDefault()
+			await goto(`/${searchEntityType}/${searchEntityId}`)
+			event.currentTarget.reset()
+		}}
+	>
+		<select
+			bind:value={searchEntityType}
+		>
+			{#each Object.entries(EntityType) as [label, entityType]}
+				<option value={entityType}>{label}</option>
+			{/each}
+		</select>
+
+		<input
+			type="text"
+			placeholder={{
+				[EntityType.Account]: '0x123456...abcdef',
+				[EntityType.Schema]: 'Enter schema ID...',
+				[EntityType.Attestation]: 'Enter attestation ID...',
+			}[searchEntityType]}
+			bind:value={searchEntityId}
+		/>
+
+		<input
+			type="submit"
+			value="Go"
+		/>
+	</form>
 </main>
 
 
@@ -346,6 +388,21 @@
 		}
 	}
 
+	:global(
+		:is(
+			button,
+			input,
+			select
+		)
+	) {
+		/* appearance: none; */
+		font: inherit;
+		font-size: 0.85em;
+		border: 1px solid #0000002a;
+		border-radius: 0.5em;
+		padding: 0.5em 0.75em;
+	}
+
 	main {
 		display: grid;
 		grid: 'stack';
@@ -363,9 +420,8 @@
 			padding: 1rem;
 		}
 
-		& > article {
-			place-self: end start;
-			/* place-self: start end; */
+		& > article,
+		& > form {
 			margin: 1em;
 			border-radius: 1em;
 			border: 2px solid #0000001a;
@@ -374,6 +430,18 @@
 			backdrop-filter: blur(10px);
 
 			padding: 1rem;
+		}
+
+		& > article {
+			place-self: end start;
+		}
+
+		& > form {
+			place-self: start end;
+
+			display: flex;
+			align-items: center;
+			gap: 1em;
 		}
 	}
 </style>
