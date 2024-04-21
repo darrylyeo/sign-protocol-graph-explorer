@@ -165,3 +165,27 @@ export const getAttestation = async ({
 }) => (
 	await get<Attestation>(`attestations/${attestationId}`)
 )
+
+export const getSchemasForAddress = async ({
+	address,
+	page,
+}: {
+	address: `0x${string}`,
+	page: number,
+}) => (
+	await get<Paginated<SchemaSummary>>(`addresses/${address}/schemas`, {
+		page,
+	})
+)
+
+export const getAttestationsForAddress = async ({
+	address,
+	page,
+}: {
+	address: `0x${string}`,
+	page: number,
+}) => (
+	await get<Paginated<AttestationSummary>>(`addresses/${address}/attestations`, {
+		page,
+	})
+)
