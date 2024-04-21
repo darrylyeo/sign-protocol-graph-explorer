@@ -97,6 +97,7 @@
 					defaultEdgeType: 'curved',
 					renderLabels: true,
 					renderEdgeLabels: true,
+					enableEdgeEvents: true,
 					nodeProgramClasses,
 					nodeHoverProgramClasses: nodeProgramClasses,
 					edgeProgramClasses: {
