@@ -195,7 +195,12 @@
 			bind:hoveredEdge
 			bind:hoveredNode
 			onNodeClick={(nodeId) => {
-				goto(`/${nodeId}`)
+				const entityId = nodeId
+				goto(`/${entityId}`)
+			}}
+			onEdgeClick={(edgeId) => {
+				const entityId = edgeId.split('|')[0]
+				goto(`/${entityId}`)
 			}}
 		/>
 	</div>
