@@ -101,8 +101,10 @@
 					nodeProgramClasses,
 					nodeHoverProgramClasses: nodeProgramClasses,
 					edgeProgramClasses: {
-						'straight': SigmaRenderingModule.EdgeArrowProgram,
-						'curved': EdgeCurveModule.EdgeCurvedArrowProgram,
+						'straight': SigmaRenderingModule.EdgeLineProgram,
+						'straightArrow': SigmaRenderingModule.EdgeArrowProgram,
+						'curved': EdgeCurveModule.default,
+						'curvedArrow': EdgeCurveModule.EdgeCurvedArrowProgram,
 					},
 				},
 			)
