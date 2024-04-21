@@ -299,6 +299,7 @@
 
 	// Components
 	import SigmaGraph from '$/components/SigmaGraph.svelte'
+	import SignLogo from '$/images/Sign.webp'
 
 
 	// Transitions
@@ -349,7 +350,7 @@
 		<h1>
 			<a href="/">Attestation Graph</a>
 		</h1>
-		powered by Sign
+		powered by <a href="https://sign.global" target="_blank"><img src={SignLogo} alt="Sign" height="40" /></a>
 	</header>
 
 	{#key $page}
@@ -448,6 +449,11 @@
 			backdrop-filter: blur(10px);
 
 			padding: 1rem;
+
+			& img {
+				vertical-align: middle;
+				margin: 0 -0.5em;
+			}
 		}
 
 		& > article,
