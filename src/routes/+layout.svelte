@@ -69,6 +69,7 @@
 			[
 				...$page.data.schemas ?? [],
 				...$page.data.schemasForAccount ?? [],
+				...$page.data.attestationsForAccount?.map(attestation => attestation.schema) ?? [],
 			] as Schema[]
 		))
 			allSchemas.set(schema.id, schema)
