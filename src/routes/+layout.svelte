@@ -65,28 +65,32 @@
 	)
 
 	$effect(() => {
-		const schemas: Schema[] | undefined = $page.data.schemas || $page.data.schemasForAccount
-		if(schemas)
-			for (const schema of schemas) {
-				allSchemas.set(schema.id, schema)
-			}
+		for (const schema of (
+			[
+				...$page.data.schemas ?? [],
+				...$page.data.schemasForAccount ?? [],
+			] as Schema[]
+		))
+			allSchemas.set(schema.id, schema)
 	})
 
 	$effect(() => {
-		const attestations: AttestationSummary[] = $page.data.attestations || $page.data.attestationsForAccount
+		for (const attestation of (
+			[
+				...$page.data.attestations ?? [],
+				...$page.data.attestationsForAccount ?? [],
+			] as AttestationSummary[]
+		)) {
+			allAttestations.set(attestation.id, attestation)
 
-		if(attestations)
-			for (const attestation of attestations) {
-				allAttestations.set(attestation.id, attestation)
-				
-				for (const address of [
-					attestation.attester,
-					...attestation.recipients
-				])
-					allAccounts.set(address, {
-						address,
-					})
-			}
+			for (const address of [
+				attestation.attester,
+				...attestation.recipients
+			])
+				allAccounts.set(address, {
+					address,
+				})
+		}
 	})
 
 	// (Graph)
