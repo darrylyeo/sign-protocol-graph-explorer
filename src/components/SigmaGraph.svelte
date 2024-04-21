@@ -79,8 +79,11 @@
 	let container: HTMLElement | undefined = $state(undefined)
 
 	// (Derived)
-	let renderer: Sigma | undefined = $derived.by(() => {
-		if(browser && graph && container && Sigma && SigmaRenderingModule && NodeImageModule && EdgeCurveModule){
+	let renderer: Sigma | undefined = $state(undefined)
+
+	$effect(() => {
+	// let renderer: Sigma | undefined = $derived.by(() => {
+		if(browser && graph && container && Sigma && SigmaRenderingModule && NodeImageModule && EdgeCurveModule && !renderer){
 			const nodeProgramClasses = {
 				'circle': SigmaRenderingModule.NodeCircleProgram,
 				'point': SigmaRenderingModule.NodePointProgram,
@@ -92,7 +95,8 @@
 				'pictogram': NodeImageModule.NodePictogramProgram,
 			}
 
-			const renderer = new Sigma(
+			// const renderer = new Sigma(
+			const _renderer = renderer = new Sigma(
 				graph,
 				container,
 				{
@@ -100,6 +104,7 @@
 					renderLabels: true,
 					renderEdgeLabels: true,
 					enableEdgeEvents: true,
+					// enableEdgeEvents: Boolean(onEdgeClick || onEdgeEnter || onEdgeLeave),
 					nodeProgramClasses,
 					nodeHoverProgramClasses: nodeProgramClasses,
 					edgeProgramClasses: {
@@ -110,13 +115,23 @@
 					},
 				},
 			)
-			return renderer
+
+			// console.log({renderer})
+			// return renderer
+		}else{
+			return () => {
+				renderer?.kill()
+			}
 		}
 	})
 
 	$effect(() => {
-		renderer?.setGraph(graph)
-		renderer?.refresh()
+		if(renderer && graph){
+			const _renderer = renderer
+
+			_renderer.setGraph(graph)
+			_renderer.refresh()
+		}
 	})
 
 	$effect(() => {
@@ -171,12 +186,6 @@
 			onEdgeLeave?.(edge)
 			hoveredEdge = undefined
 		})
-
-		_renderer.refresh()
-
-		return () => {
-			_renderer.kill()
-		}
 	})
 
 	$effect(() => {
