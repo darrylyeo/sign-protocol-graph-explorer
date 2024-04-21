@@ -108,9 +108,11 @@
 	$effect(() => {
 		for (const [attestationId, attestation] of allAttestations.entries()) {
 			for (const recipient of attestation.recipients) {
+				const schemaId = attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId
+
 				const attesterNodeId = `account/${attestation.attester}`
 				const recipientNodeId = `account/${recipient}`
-				const schemaNodeId = `schema/${attestation.schemaId}`
+				const schemaNodeId = `schema/${schemaId}`
 
 				// Attester → Recipient
 				{
