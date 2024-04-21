@@ -102,7 +102,7 @@
 	for (const schema of schemas) {
 		const nodeId = `schema/${schema.id}`
 
-		graph.mergeNode(nodeId, {
+		if(!graph.hasNode(nodeId)) graph.mergeNode(nodeId, {
 			type: 'image',
 			image: networkImages[schema.chainId],
 			label: schema.name,
@@ -117,7 +117,7 @@
 		for (const [address, account] of allAccounts.entries()){
 			const nodeId = `account/${address}`
 
-			graph.mergeNode(nodeId, {
+			if(!graph.hasNode(nodeId)) graph.mergeNode(nodeId, {
 				label: account.ensName ?? (address.slice(0, 6) + '…' + address.slice(-4)),
 				x: Math.random() * 100,
 				y: Math.random() * 100,
