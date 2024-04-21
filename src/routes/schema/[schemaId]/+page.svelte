@@ -63,7 +63,7 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Timestamp</th>
+						<th>Time</th>
 						<th>Attester</th>
 						<th>Recipient(s)</th>
 					</tr>
@@ -72,9 +72,21 @@
 				<tbody>
 					{#each attestations as attestation}
 						<tr>
-							<td>{new Date(attestation.attestTimestamp).toLocaleString()}</td>
-							<td data-format="address">{attestation.attester}</td>
-							<td data-format="address">{attestation.recipients}</td>
+							<td>
+								<a href={`/attestation/${attestation.id}`}>
+									{new Date(attestation.attestTimestamp).toLocaleString()}
+								</a>
+							</td>
+							<td data-format="address">
+								<a href={`/account/${attestation.attester}`}>{attestation.attester}</a>
+							</td>
+							<td data-format="address">
+								{#each attestation.recipients as recipient}
+									<a href={`/account/${recipient}`}>{recipient}</a><br>
+								{:else}
+									–
+								{/each}
+							</td>
 						</tr>
 					{/each}
 				</tbody>
