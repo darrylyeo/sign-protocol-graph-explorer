@@ -231,16 +231,8 @@
 
 		const layout = new ForceSupervisor(graph, {
 			settings: {
+				...forceAtlas2.inferSettings(graph),
 				adjustSizes: true,
-				gravity: 0.01,
-				scalingRatio: 0.25,
-				strongGravityMode: true,
-				slowDown: 1,
-				outboundAttractionDistribution: false,
-				linLogMode: false,
-				edgeWeightInfluence: 10,
-				barnesHutOptimize: true,
-				barnesHutTheta: 0.6,
 			},
 		})
 
