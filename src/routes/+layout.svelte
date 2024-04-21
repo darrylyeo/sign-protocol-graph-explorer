@@ -116,10 +116,12 @@
 				{
 					const sourceId = attesterNodeId
 					const targetId = recipientNodeId
-					const edgeId = `${sourceId}|${targetId}`
+					// const edgeId = `${sourceId}|${targetId}`
+					const edgeId = `attestation/${attestationId}`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdge(
+						graph.addEdgeWithKey(
+							edgeId,
 							sourceId,
 							targetId,
 							{
@@ -135,10 +137,12 @@
 				{
 					const sourceId = attesterNodeId
 					const targetId = schemaNodeId
-					const edgeId = `${sourceId}|${targetId}`
+					// const edgeId = `${sourceId}|${targetId}`
+					const edgeId = `attestation/${attestationId}|1`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdge(
+						graph.addEdgeWithKey(
+							edgeId,
 							sourceId,
 							targetId,
 							{
@@ -152,10 +156,12 @@
 				{
 					const sourceId = schemaNodeId
 					const targetId = recipientNodeId
-					const edgeId = `${sourceId}|${targetId}`
+					// const edgeId = `${sourceId}|${targetId}`
+					const edgeId = `attestation/${attestationId}|2`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdge(
+						graph.addEdgeWithKey(
+							edgeId,
 							sourceId,
 							targetId,
 							{
