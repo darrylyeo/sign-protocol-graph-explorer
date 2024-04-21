@@ -56,6 +56,37 @@ export type AttestationSummary = {
 	recipients: `0x${string}`[],
 }
 
+export type Attestation = {
+	id: string,
+	mode: string,
+	chainType: string,
+	chainId: string,
+	attestationId: `0x${string}`
+	schemaId: `0x${string}`,
+	fullSchemaId: `0x${string}`,
+	linkedAttestation: string,
+	attester: `0x${string}`,
+	from: `0x${string}`,
+	attestTimestamp: number,
+	validUntil: string,
+	revoked: boolean,
+	revokeTimestamp: null,
+	revokeReason: null,
+	revokeTransactionHash: null,
+	data: string,
+	dataLocation: string,
+	recipients: `0x${string}`[],
+	schema: {
+		id: string,
+		schemaId: string,
+		name: string,
+		data: {
+			name: string,
+			type: string,
+		}[],
+	},
+}
+
 
 // Functions
 const get = async <T>(
@@ -131,4 +162,12 @@ export const getAttestations = async ({
 		page,
 	})
 		.then(data => data.rows)
+)
+
+export const getAttestation = async ({
+	attestationId,
+}: {
+	attestationId: string,
+}) => (
+	await get<Attestation>(`attestations/${attestationId}`)
 )
