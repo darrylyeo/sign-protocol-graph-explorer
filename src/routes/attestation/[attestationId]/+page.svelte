@@ -9,8 +9,14 @@
 		attestation,
 	} = $derived(data)
 
+	let schemaId = $derived(
+		attestation.mode === 'onchain'
+			? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}`
+			: attestation.schemaId
+	)
+
 	let schema = $derived(
-		schemas.find(_schema => _schema.id === attestation.schemaId)
+		schemas.find(_schema => _schema.id === schemaId)
 	)
 </script>
 
@@ -27,7 +33,7 @@
 	<dl>
 		{#each [
 			// { name: 'Attestation ID', description: attestation.id },
-			{ name: 'Schema', description: schema?.name ?? attestation.schemaId, format: 'link', link: `/schema/${attestation.schemaId}` },
+			{ name: 'Schema', description: schema?.name ?? attestation.schemaId, format: 'link', link: `/schema/${schemaId}` },
 			{ name: 'Attester', description: attestation.attester, format: 'address', link: `/account/${attestation.attester}` },
 			{ name: 'Recipients', description: attestation.recipients.join('\n'), format: 'address', link: `/account/${attestation.recipients[0]}` },
 			{ name: 'Time', description: `${new Date(attestation.attestTimestamp).toLocaleString()} (${new Intl.RelativeTimeFormat().format(Math.floor((attestation.attestTimestamp - Date.now()) / 1000), 'second')})` },
