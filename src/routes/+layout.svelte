@@ -147,6 +147,7 @@
 						targetId,
 						{
 							id: edgeId,
+							type: 'straight',
 							label: `${allSchemas.get(attestation.schemaId)?.name ?? attestationId} →`,
 							color: hashStringToColor(`schema/${attestation.schemaId}`),
 							size: 2,
