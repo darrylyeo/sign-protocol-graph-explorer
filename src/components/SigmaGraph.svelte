@@ -115,13 +115,22 @@
 	})
 
 	$effect(() => {
-		if(renderer && edgeReducer)
-			renderer.setSetting('edgeReducer', edgeReducer)
+		renderer?.setGraph(graph)
+		renderer?.refresh()
 	})
 
 	$effect(() => {
-		if(renderer && nodeReducer)
+		if(renderer && edgeReducer){
+			renderer.setSetting('edgeReducer', edgeReducer)
+			renderer.refresh()
+		}
+	})
+
+	$effect(() => {
+		if(renderer && nodeReducer){
 			renderer.setSetting('nodeReducer', nodeReducer)
+			renderer.refresh()
+		}
 	})
 
 	$effect(() => {
@@ -227,8 +236,7 @@
 			)
 		}
 
-		renderer?.setGraph(graph)
-		renderer?.refresh()
+		graph = graph
 	})
 
 
