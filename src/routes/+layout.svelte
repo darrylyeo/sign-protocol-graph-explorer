@@ -308,7 +308,7 @@
 
 	:global(:root) {
 		font-size: 16px;
-		font-family: sans-serif;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		background-color: #FEF7F2;
 		color: #000;
 		
