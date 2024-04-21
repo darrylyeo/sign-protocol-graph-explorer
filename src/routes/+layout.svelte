@@ -310,6 +310,7 @@
 
 <main>
 	<div
+		class="graph"
 		style:cursor={hoveredNodeId || hoveredEdgeId ? 'pointer' : undefined}
 	>
 		<SigmaGraph
@@ -398,42 +399,59 @@
 </main>
 
 
-<style>
-	:global(*) {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-		/* border: none; */
-	}
-
-	:global(:root) {
-		font-size: 16px;
-		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-		background-color: #FEF7F2;
-		color: #000;
-		
-		@media (prefers-color-scheme: dark) {
-			/* filter: invert(); */
-			/* background-color: #321;
-			color: #fff; */
+<svelte:head>
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			/* border: none; */
 		}
-	}
 
-	:global(
-		:is(
-			button,
-			input,
-			select
-		)
-	) {
-		/* appearance: none; */
-		font: inherit;
-		font-size: 0.85em;
-		border: 1px solid #0000002a;
-		border-radius: 0.5em;
-		padding: 0.5em 0.75em;
-	}
+		:root {
+			font-size: 16px;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			background-color: #FEF7F2;
+			background: radial-gradient(circle, #FEF7F2, #f1e5d7);
+			color: #000;
+			
+			@media (prefers-color-scheme: dark) {
+				/* filter: invert(); */
+				/* background-color: #321;
+				color: #fff; */
+			}
 
+			:is(
+				button,
+				input,
+				select
+			) {
+				/* appearance: none; */
+				font: inherit;
+				font-size: 0.85em;
+				border: 1px solid #0000002a;
+				border-radius: 0.5em;
+				padding: 0.5em 0.75em;
+
+				transition: 0.1s ease-out;
+
+				&:disabled {
+					color: #0000003a;
+				}
+			}
+		}
+
+		a {
+			color: #cf5c0f;
+
+			&:not(:hover) {
+				text-decoration: none;
+			}
+		}
+	</style>
+</svelte:head>
+
+<style>
 	main {
 		display: grid;
 		grid: 'stack';
@@ -454,6 +472,10 @@
 				vertical-align: middle;
 				margin: 0 -0.5em;
 			}
+
+			& > * {
+				filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
+			}
 		}
 
 		& > article,
@@ -466,6 +488,10 @@
 			backdrop-filter: blur(10px);
 
 			padding: 1rem;
+
+			& > * {
+				filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
+			}
 		}
 
 		& > article {
@@ -488,6 +514,10 @@
 			& fieldset {
 				display: contents;
 			}
+		}
+
+		.graph {
+			filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
 		}
 	}
 </style>
