@@ -24,7 +24,7 @@
 <section>
 	<div>
 		<header>
-			<h1>Attestation for {attestation.recipients.length} {attestation.recipients.length === 1 ? 'recipient' : 'recipients'}</h1>
+			<h1>Attestation to {attestation.recipients.length} {attestation.recipients.length === 1 ? 'recipient' : 'recipients'}</h1>
 
 			<span>Attestation</span>
 		</header>
