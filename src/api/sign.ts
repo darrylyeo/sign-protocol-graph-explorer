@@ -9,6 +9,13 @@ export const chainIdToName = {
 	'ipfs': 'IPFS',
 } as const
 
+type Paginated<T> = {
+	total: number,
+	rows: T,
+	page: number,
+	size: number,
+}
+
 export type SchemaSummary = {
 	id: string,
 	mode: string,
@@ -107,20 +114,12 @@ const get = async <T>(
 
 // API
 export const getTopSchemas = async () => (
-	await get<
-		{
-			rows: SchemaSummary[],
-		}
-	>(`top-schemas`)
+	await get<Paginated<SchemaSummary[]>>(`top-schemas`)
 		.then(data => data.rows)
 )
 
 export const getTrendingSchemas = async () => (
-	await get<
-		{
-			rows: SchemaSummary[],
-		}
-	>(`trending-schemas`)
+	await get<Paginated<SchemaSummary[]>>(`trending-schemas`)
 		.then(data => data.rows)
 )
 
@@ -152,12 +151,7 @@ export const getAttestations = async ({
 	schemaId: string,
 	page: number,
 }) => (
-	await get<
-		{
-			total: number,
-			rows: AttestationSummary[],
-		}
-	>(`attestations`, {
+	await get<Paginated<AttestationSummary>>(`attestations`, {
 		schemaId,
 		page,
 	})
