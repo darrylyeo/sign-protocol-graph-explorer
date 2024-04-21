@@ -202,11 +202,21 @@
 		graph = graph
 	})
 
-	let hoveredNode: string | undefined = $state()
-	let hoveredEdge: string | undefined = $state()
+	let hoveredNodeId: string | undefined = $state()
+	let hoveredEdgeId: string | undefined = $state()
+
+	let hoveredNodeSubgraph = $derived.by(() => {
+		if(hoveredNodeId){
+			return {
+				nodeIds: new Set([
+					hoveredNodeId,
+				]),
+			} as Subgraph
+		}
+	})
 
 	let hoveredAttestationId = $derived(
-		hoveredEdge && hoveredEdge.split('|')[0].split('/')[1]
+		hoveredEdgeId && hoveredEdgeId.split('|')[0].split('/')[1]
 	)
 
 	let hoveredAttestationSubgraph = $derived.by(() => {
@@ -238,7 +248,8 @@
 	})
 
 	let highlightedSubgraph = $derived(
-		hoveredAttestationSubgraph
+		hoveredNodeSubgraph
+		|| hoveredAttestationSubgraph
 		|| selectedSubgraph
 	)
 
@@ -254,12 +265,12 @@
 
 <main>
 	<div
-		style:cursor={hoveredNode || hoveredEdge ? 'pointer' : undefined}
+		style:cursor={hoveredNodeId || hoveredEdgeId ? 'pointer' : undefined}
 	>
 		<SigmaGraph
 			{graph}
-			bind:hoveredEdge
-			bind:hoveredNode
+			bind:hoveredEdge={hoveredEdgeId}
+			bind:hoveredNode={hoveredNodeId}
 			edgeReducer={(edgeId, attributes) => ({
 				...attributes,
 				// ...edgeId === hoveredEdge && {
