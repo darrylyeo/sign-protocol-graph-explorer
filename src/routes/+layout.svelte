@@ -226,6 +226,15 @@
 	let hoveredNodeId: string | undefined = $state()
 	let hoveredEdgeId: string | undefined = $state()
 
+	$effect(() => {
+		if(hoveredNodeId){
+			preloadData(hoveredNodeId)
+		}
+		else if(hoveredEdgeId){
+			preloadData(hoveredEdgeId.split('|')[0])
+		}
+	})
+
 	let hoveredNodeSubgraph = $derived.by(() => {
 		if(hoveredNodeId){
 			return {
@@ -296,7 +305,7 @@
 
 
 	// Actions
-	import { goto } from '$app/navigation'
+	import { goto, preloadData } from '$app/navigation'
 
 
 	// Components
