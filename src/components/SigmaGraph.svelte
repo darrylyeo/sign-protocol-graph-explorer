@@ -88,7 +88,12 @@
 					nodeProgramClasses: {
 						'circle': SigmaRenderingModule.NodeCircleProgram,
 						'point': SigmaRenderingModule.NodePointProgram,
-						'image': NodeImageModule.NodeImageProgram,
+						'image': NodeImageModule.createNodeImageProgram({
+							objectFit: 'contain',
+							padding: 0.1,
+							correctCentering: true,
+						}),
+						'pictogram': NodeImageModule.NodePictogramProgram,
 					},
 					edgeProgramClasses: {
 						'straight': SigmaRenderingModule.EdgeArrowProgram,

@@ -1,6 +1,7 @@
 <script lang="ts">
-	// Types
+	// Types/constants
 	import type { Attestation, Schema } from '$/api/sign.js'
+	import { networkImages } from '$/images/images.js'
 	
 
 	// Context
@@ -36,6 +37,8 @@
 
 		if(!graph.hasNode(nodeId))
 			graph.addNode(nodeId, {
+				type: 'image',
+				image: networkImages[schema.chainId],
 				label: schema.name,
 				x: Math.random() * 100,
 				y: Math.random() * 100,
