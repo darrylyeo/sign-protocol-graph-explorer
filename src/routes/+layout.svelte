@@ -231,7 +231,7 @@
 		color: #000;
 		
 		@media (prefers-color-scheme: dark) {
-			filter: invert();
+			/* filter: invert(); */
 			/* background-color: #321;
 			color: #fff; */
 		}
