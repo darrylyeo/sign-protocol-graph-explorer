@@ -108,6 +108,7 @@
 		})
 	)
 
+	let refreshKey = 0
 	for (const schema of schemas) {
 		const nodeId = `schema/${schema.id}`
 
@@ -219,6 +220,7 @@
 		}
 
 		graph = graph
+		refreshKey++
 	})
 
 	let hoveredNodeId: string | undefined = $state()
@@ -315,6 +317,7 @@
 	>
 		<SigmaGraph
 			{graph}
+			{refreshKey}
 			bind:hoveredEdge={hoveredEdgeId}
 			bind:hoveredNode={hoveredNodeId}
 			edgeReducer={(edgeId, attributes) => ({

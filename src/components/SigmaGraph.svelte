@@ -35,6 +35,7 @@
 	// Inputs
 	let {
 		graph,
+		refreshKey,
 
 		enableForce = true,
 		enableDragAndDrop = true,
@@ -54,6 +55,7 @@
 		onEdgeLeave,
 	}: {
 		graph: Graph,
+		refreshKey: any,
 
 		enableForce?: boolean,
 		enableDragAndDrop?: boolean,
@@ -180,7 +182,7 @@
 	})
 
 	$effect(() => {
-		if(arrangeParallelEdges && EdgeCurveModule && graph){
+		if(refreshKey, arrangeParallelEdges && EdgeCurveModule && graph){
 			EdgeCurveModule.indexParallelEdgesIndex(graph, { edgeIndexAttribute: 'edgeIndex', edgeMaxIndexAttribute: 'edgeCount' })
 
 			// Adapt types and curvature of parallel edges for rendering:
