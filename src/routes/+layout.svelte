@@ -97,9 +97,6 @@
 		})
 	}
 
-	let hoveredEdge: string | undefined = $state()
-	let hoveredNode: string | undefined = $state()
-
 	$effect(() => {
 		for (const [address, account] of allAccounts.entries()){
 			const nodeId = `account/${address}`
@@ -189,6 +186,30 @@
 		graph = graph
 	})
 
+	let hoveredNode: string | undefined = $state()
+	let hoveredEdge: string | undefined = $state()
+
+	let hoveredAttestationId = $derived(
+		hoveredEdge && hoveredEdge.split('|')[0].split('/')[1]
+	)
+
+	let hoveredAttestationSubgraph = $derived.by(() => {
+		if(!hoveredAttestationId) return undefined
+
+		const attestation = allAttestations.get(hoveredAttestationId)
+
+		return attestation && {
+			nodeIds: new Set([
+				`account/${attestation.attester}`,
+				`schema/${attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId}`,
+				...attestation.recipients.map(recipient => `account/${recipient}`),
+			]),
+			edgeIds: new Set([
+				`attestation/${attestation.id}`,
+			]),
+		}
+	})
+
 
 	// Actions
 	import { goto } from '$app/navigation'
@@ -209,8 +230,17 @@
 			bind:hoveredNode
 			edgeReducer={(edgeId, attributes) => ({
 				...attributes,
-				...edgeId === hoveredEdge && {
+				// ...edgeId === hoveredEdge && {
+				...hoveredAttestationSubgraph?.edgeIds.has(edgeId.split('|')[0]) && {
 					size: attributes.size * 2,
+					zIndex: 1,
+				},
+			})}
+			nodeReducer={(nodeId, attributes) => ({
+				...attributes,
+				// ...nodeId === hoveredNode && {
+				...hoveredAttestationSubgraph?.nodeIds.has(nodeId) && {
+					highlighted: true,
 					zIndex: 1,
 				},
 			})}
