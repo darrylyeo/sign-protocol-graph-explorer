@@ -2,7 +2,12 @@
 	// Types/constants
 	import type { AttestationSummary, Schema } from '$/api/sign.js'
 	import { networkImages } from '$/images/images.js'
-	
+
+	type Subgraph = {
+		nodeIds?: Set<string>,
+		edgeIds?: Set<string>,
+	}
+
 
 	// Context
 	import { page } from '$app/stores'
@@ -21,6 +26,17 @@
 	// Functions
 	import { hashStringToColor } from '$/utils/hashStringToColor'
 	import { resolveEnsName } from '$/api/ens.js'
+
+	const getAttestationSubgraph = (attestation: AttestationSummary) => ({
+		nodeIds: new Set([
+			`account/${attestation.attester}`,
+			`schema/${attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId}`,
+			...attestation.recipients.map(recipient => `account/${recipient}`),
+		]),
+		edgeIds: new Set([
+			`attestation/${attestation.id}`,
+		]),
+	} as Subgraph)
 
 
 	// Internal state
@@ -194,21 +210,37 @@
 	)
 
 	let hoveredAttestationSubgraph = $derived.by(() => {
-		if(!hoveredAttestationId) return undefined
-
-		const attestation = allAttestations.get(hoveredAttestationId)
-
-		return attestation && {
-			nodeIds: new Set([
-				`account/${attestation.attester}`,
-				`schema/${attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId}`,
-				...attestation.recipients.map(recipient => `account/${recipient}`),
-			]),
-			edgeIds: new Set([
-				`attestation/${attestation.id}`,
-			]),
+		if(hoveredAttestationId){
+			const attestation = allAttestations.get(hoveredAttestationId)
+			return attestation && getAttestationSubgraph(attestation)
 		}
 	})
+
+	let selectedSubgraph = $derived.by(() => {
+		if($page.params.attestationId){
+			const attestation = allAttestations.get($page.params.attestationId)
+			return attestation && getAttestationSubgraph(attestation)
+		}
+		else if($page.params.schemaId){
+			return {
+				nodeIds: new Set([
+					`schema/${$page.params.schemaId}`,
+				]),
+			} as Subgraph
+		}
+		else if($page.params.accountId){
+			return {
+				nodeIds: new Set([
+					`account/${$page.params.accountId}`,
+				]),
+			} as Subgraph
+		}
+	})
+
+	let highlightedSubgraph = $derived(
+		hoveredAttestationSubgraph
+		|| selectedSubgraph
+	)
 
 
 	// Actions
@@ -231,7 +263,7 @@
 			edgeReducer={(edgeId, attributes) => ({
 				...attributes,
 				// ...edgeId === hoveredEdge && {
-				...hoveredAttestationSubgraph?.edgeIds.has(edgeId.split('|')[0]) && {
+				...highlightedSubgraph?.edgeIds?.has(edgeId.split('|')[0]) && {
 					size: attributes.size * 2,
 					zIndex: 1,
 				},
@@ -239,7 +271,7 @@
 			nodeReducer={(nodeId, attributes) => ({
 				...attributes,
 				// ...nodeId === hoveredNode && {
-				...hoveredAttestationSubgraph?.nodeIds.has(nodeId) && {
+				...highlightedSubgraph?.nodeIds?.has(nodeId) && {
 					highlighted: true,
 					zIndex: 1,
 				},
