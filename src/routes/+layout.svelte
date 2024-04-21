@@ -59,8 +59,40 @@
 	let allAccounts = $state(
 		new Map<`0x${string}`, {
 			address: `0x${string}`,
+			ensName?: string,
 		}>()
 	)
+
+	const resolveEnsName = async (address: `0x${string}`) => {
+		// ENS subgraph
+		const response = await fetch('https://api.thegraph.com/subgraphs/name/ensdomains/ens', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				query: `
+					query {
+						domains(where: { resolvedAddress_in: ["${address}"] }) {
+							name
+						}
+					}
+				`,
+			}),
+		})
+
+		const { data } = await response.json()
+
+		return data.domains[0]?.name
+	}
+
+	$effect(() => {
+		for (const [address, account] of allAccounts.entries())
+			resolveEnsName(address).then(ensName => {
+				account.ensName = ensName
+			})
+	})
+
 	let allAttestations = $state(
 		new Map<string, AttestationSummary>()
 	)
@@ -95,7 +127,7 @@
 			const nodeId = `account/${address}`
 
 			graph.mergeNode(nodeId, {
-				label: address.slice(0, 6) + '…' + address.slice(-4),
+				label: account.ensName ?? (address.slice(0, 6) + '…' + address.slice(-4)),
 				x: Math.random() * 100,
 				y: Math.random() * 100,
 				size: 12,
