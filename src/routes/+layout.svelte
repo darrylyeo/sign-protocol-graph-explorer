@@ -197,6 +197,13 @@
 			{graph}
 			bind:hoveredEdge
 			bind:hoveredNode
+			edgeReducer={(edgeId, attributes) => ({
+				...attributes,
+				...edgeId === hoveredEdge && {
+					size: attributes.size * 2,
+					zIndex: 1,
+				},
+			})}
 			onNodeClick={(nodeId) => {
 				const entityId = nodeId
 				goto(`/${entityId}`)
