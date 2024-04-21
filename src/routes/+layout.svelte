@@ -283,6 +283,7 @@
 				...attributes,
 				// ...nodeId === hoveredNode && {
 				...highlightedSubgraph?.nodeIds?.has(nodeId) && {
+					size: attributes.size + graph.degree(nodeId) ** 0.05 + 2.5,
 					highlighted: true,
 					zIndex: 1,
 				},
