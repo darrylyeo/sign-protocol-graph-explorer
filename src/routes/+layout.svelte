@@ -66,15 +66,18 @@
 	)
 
 	$effect(() => {
-		if($page.data.schemas)
-			for (const schema of $page.data.schemas as Schema[]) {
+		const schemas: Schema[] | undefined = $page.data.schemas || $page.data.schemasForAccount
+		if(schemas)
+			for (const schema of schemas) {
 				allSchemas.set(schema.id, schema)
 			}
 	})
 
 	$effect(() => {
-		if($page.data.attestations)
-			for (const attestation of $page.data.attestations as AttestationSummary[]) {
+		const attestations: AttestationSummary[] = $page.data.attestations || $page.data.attestationsForAccount
+
+		if(attestations)
+			for (const attestation of attestations) {
 				allAttestations.set(attestation.id, attestation)
 				
 				for (const address of [
