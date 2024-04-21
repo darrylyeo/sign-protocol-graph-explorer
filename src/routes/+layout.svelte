@@ -23,33 +23,6 @@
 
 
 	// Internal state
-	import Graph from 'graphology'
-
-	let graph = $state(
-		new Graph({
-			multi: true,
-			allowSelfLoops: true,
-		})
-	)
-
-	for (const schema of schemas) {
-		const nodeId = `schema/${schema.id}`
-
-		graph.mergeNode(nodeId, {
-			type: 'image',
-			image: networkImages[schema.chainId],
-			label: schema.name,
-			x: Math.random() * 100,
-			y: Math.random() * 100,
-			size: 25 + Math.log(schema.attestationCount) * 3,
-			color: hashStringToColor(nodeId),
-		})
-	}
-
-	let hoveredEdge: string | undefined = $state()
-	let hoveredNode: string | undefined = $state()
-
-
 	import { Map } from 'svelte/reactivity'
 
 	let allSchemas = $state(
@@ -121,6 +94,33 @@
 					})
 			}
 	})
+
+	// (Graph)
+	import Graph from 'graphology'
+
+	let graph = $state(
+		new Graph({
+			multi: true,
+			allowSelfLoops: true,
+		})
+	)
+
+	for (const schema of schemas) {
+		const nodeId = `schema/${schema.id}`
+
+		graph.mergeNode(nodeId, {
+			type: 'image',
+			image: networkImages[schema.chainId],
+			label: schema.name,
+			x: Math.random() * 100,
+			y: Math.random() * 100,
+			size: 25 + Math.log(schema.attestationCount) * 3,
+			color: hashStringToColor(nodeId),
+		})
+	}
+
+	let hoveredEdge: string | undefined = $state()
+	let hoveredNode: string | undefined = $state()
 
 	$effect(() => {
 		for (const [address, account] of allAccounts.entries()){
