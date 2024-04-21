@@ -16,7 +16,7 @@
 
 
 	// Context
-	import { page } from '$app/stores'
+	import { page, navigating } from '$app/stores'
 	$inspect('$page.data', $page.data)
 
 	let {
@@ -366,28 +366,32 @@
 				event.currentTarget.reset()
 			}}
 		>
-			<select
-				bind:value={searchEntityType}
+			<fieldset
+				disabled={$navigating}
 			>
-				{#each Object.entries(EntityType) as [label, entityType]}
-					<option value={entityType}>{label}</option>
-				{/each}
-			</select>
+				<select
+					bind:value={searchEntityType}
+				>
+					{#each Object.entries(EntityType) as [label, entityType]}
+						<option value={entityType}>{label}</option>
+					{/each}
+				</select>
 
-			<input
-				type="text"
-				placeholder={{
-					[EntityType.Account]: '0x123456...abcdef',
-					[EntityType.Schema]: 'Enter schema ID...',
-					[EntityType.Attestation]: 'Enter attestation ID...',
-				}[searchEntityType]}
-				bind:value={searchEntityId}
-			/>
+				<input
+					type="text"
+					placeholder={{
+						[EntityType.Account]: '0x123456...abcdef',
+						[EntityType.Schema]: 'Enter schema ID...',
+						[EntityType.Attestation]: 'Enter attestation ID...',
+					}[searchEntityType]}
+					bind:value={searchEntityId}
+				/>
 
-			<input
-				type="submit"
-				value="Go"
-			/>
+				<input
+					type="submit"
+					value="Go"
+				/>
+			</fieldset>
 		</form>
 	{/key}
 </main>
@@ -474,6 +478,10 @@
 			display: flex;
 			align-items: center;
 			gap: 1em;
+
+			& fieldset {
+				display: contents;
+			}
 		}
 	}
 </style>
