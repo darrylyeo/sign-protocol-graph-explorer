@@ -37,6 +37,7 @@
 		graph,
 
 		enableForce = true,
+		enableDragAndDrop = true,
 		arrangeParallelEdges = true,
 
 		edgeReducer,
@@ -55,6 +56,7 @@
 		graph: Graph,
 
 		enableForce?: boolean,
+		enableDragAndDrop?: boolean,
 		arrangeParallelEdges?: boolean,
 
 		edgeReducer?: (edge: string, data: Attributes) => Partial<DisplayData>,
@@ -229,21 +231,75 @@
 		renderer?.refresh()
 	})
 
+
+	let layout: import('graphology-layout-forceatlas2/worker').default | undefined = $state(undefined)
+
 	$effect(() => {
 		if(!(enableForce && ForceSupervisor && graph)) return
 
-		const layout = new ForceSupervisor(graph, {
+		const _layout = layout = new ForceSupervisor(graph, {
 			settings: {
 				...forceAtlas2.inferSettings(graph),
 				adjustSizes: true,
 			},
 		})
 
-		layout.start()
+		_layout.start()
 
 		return () => {
-			layout.kill()
+			_layout!.kill()
 		}
+	})
+
+
+	let draggedNode: string | null = $state(null)
+	let isDragging = $state(false)
+
+	$effect(() => {
+		if(isDragging)
+			layout?.stop()
+		else
+			layout?.start()
+	})
+
+	$effect(() => {
+		if(!(renderer && enableDragAndDrop)) return
+
+		let _renderer = renderer
+
+		_renderer.on('downNode', (e) => {
+			draggedNode = e.node
+			graph.setNodeAttribute(draggedNode, 'highlighted', true)
+		});
+
+		const mouseCaptor = _renderer.getMouseCaptor()
+		
+		mouseCaptor.on('mousemovebody', (e) => {
+			if (!draggedNode) return;
+
+			isDragging = true
+
+			const pos = _renderer.viewportToGraph(e)
+
+			graph.setNodeAttribute(draggedNode, 'x', pos.x)
+			graph.setNodeAttribute(draggedNode, 'y', pos.y)
+
+			e.preventSigmaDefault();
+			e.original.preventDefault();
+			e.original.stopPropagation();
+		});
+
+		mouseCaptor.on('mouseup', () => {
+			if (draggedNode) {
+				graph.removeNodeAttribute(draggedNode, 'highlighted');
+			}
+			isDragging = false;
+			draggedNode = null;
+		})
+
+		mouseCaptor.on('mousedown', () => {
+			if (!_renderer.getCustomBBox()) _renderer.setCustomBBox(_renderer.getBBox());
+		})
 	})
 </script>
 
