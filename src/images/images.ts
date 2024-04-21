@@ -1,7 +1,7 @@
 import EthereumLogo from './Ethereum.svg'
 import PolygonLogo from './Polygon.svg'
 import BNBLogo from './BNB.svg'
-import ZetaChainLogo from './ZetaChain.svg'
+import ZetaChainLogo from './Zetachain.svg'
 import BaseLogo from './Base.svg'
 import BerachainLogo from './Berachain.svg'
 import ArweaveLogo from './Arweave.svg'
@@ -15,6 +15,7 @@ export const networkImages = {
 	204: BNBLogo,
 	7000: ZetaChainLogo,
 	8453: BaseLogo,
+	80085: BerachainLogo,
 	'arweave': ArweaveLogo,
 	'ipfs': IPFSLogo,
 } as const satisfies Record<keyof typeof chainIdToName, string>
