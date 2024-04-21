@@ -79,9 +79,7 @@
 			] as Schema[]
 		))
 			allSchemas.set(schema.id, schema)
-	})
 
-	$effect(() => {
 		for (const attestation of (
 			[
 				...$page.data.attestations ?? [],
