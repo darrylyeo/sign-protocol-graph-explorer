@@ -299,6 +299,11 @@
 
 	// Components
 	import SigmaGraph from '$/components/SigmaGraph.svelte'
+
+
+	// Transitions
+	import { scale } from 'svelte/transition'
+	import { expoOut } from 'svelte/easing'
 </script>
 
 
@@ -347,40 +352,44 @@
 		powered by Sign
 	</header>
 
-	<article>
-		{@render children()}
-	</article>
-
-	<form
-		onsubmit={async (event) => {
-			event.preventDefault()
-			await goto(`/${searchEntityType}/${searchEntityId}`)
-			event.currentTarget.reset()
-		}}
-	>
-		<select
-			bind:value={searchEntityType}
+	{#key $page}
+		<article
+			transition:scale={{ duration: 300, easing: expoOut, start: 0.5 }}
 		>
-			{#each Object.entries(EntityType) as [label, entityType]}
-				<option value={entityType}>{label}</option>
-			{/each}
-		</select>
+			{@render children()}
+		</article>
 
-		<input
-			type="text"
-			placeholder={{
-				[EntityType.Account]: '0x123456...abcdef',
-				[EntityType.Schema]: 'Enter schema ID...',
-				[EntityType.Attestation]: 'Enter attestation ID...',
-			}[searchEntityType]}
-			bind:value={searchEntityId}
-		/>
+		<form
+			onsubmit={async (event) => {
+				event.preventDefault()
+				await goto(`/${searchEntityType}/${searchEntityId}`)
+				event.currentTarget.reset()
+			}}
+		>
+			<select
+				bind:value={searchEntityType}
+			>
+				{#each Object.entries(EntityType) as [label, entityType]}
+					<option value={entityType}>{label}</option>
+				{/each}
+			</select>
 
-		<input
-			type="submit"
-			value="Go"
-		/>
-	</form>
+			<input
+				type="text"
+				placeholder={{
+					[EntityType.Account]: '0x123456...abcdef',
+					[EntityType.Schema]: 'Enter schema ID...',
+					[EntityType.Attestation]: 'Enter attestation ID...',
+				}[searchEntityType]}
+				bind:value={searchEntityId}
+			/>
+
+			<input
+				type="submit"
+				value="Go"
+			/>
+		</form>
+	{/key}
 </main>
 
 
@@ -451,10 +460,12 @@
 
 		& > article {
 			place-self: end start;
+			transform-origin: left bottom;
 		}
 
 		& > form {
 			place-self: start end;
+			transform-origin: right top;
 
 			display: flex;
 			align-items: center;
