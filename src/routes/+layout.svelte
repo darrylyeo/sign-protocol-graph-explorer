@@ -35,16 +35,15 @@
 	for (const schema of schemas) {
 		const nodeId = `schema/${schema.id}`
 
-		if(!graph.hasNode(nodeId))
-			graph.addNode(nodeId, {
-				type: 'image',
-				image: networkImages[schema.chainId],
-				label: schema.name,
-				x: Math.random() * 100,
-				y: Math.random() * 100,
-				size: 25 + Math.log(schema.attestationCount) * 3,
-				color: hashStringToColor(nodeId),
-			})
+		graph.mergeNode(nodeId, {
+			type: 'image',
+			image: networkImages[schema.chainId],
+			label: schema.name,
+			x: Math.random() * 100,
+			y: Math.random() * 100,
+			size: 25 + Math.log(schema.attestationCount) * 3,
+			color: hashStringToColor(nodeId),
+		})
 	}
 
 	let hoveredEdge: string | undefined = $state()
@@ -92,14 +91,13 @@
 		for (const [address, account] of allAccounts.entries()){
 			const nodeId = `account/${address}`
 
-			if(!graph.hasNode(nodeId))
-				graph.addNode(nodeId, {
-					label: address.slice(0, 6) + '…' + address.slice(-4),
-					x: Math.random() * 100,
-					y: Math.random() * 100,
-					size: 10,
-					color: hashStringToColor(nodeId),
-				})
+			graph.mergeNode(nodeId, {
+				label: address.slice(0, 6) + '…' + address.slice(-4),
+				x: Math.random() * 100,
+				y: Math.random() * 100,
+				size: 12,
+				color: hashStringToColor(nodeId),
+			})
 		}
 
 		graph = graph
@@ -119,20 +117,15 @@
 					const sourceId = attesterNodeId
 					const targetId = recipientNodeId
 					// const edgeId = `${sourceId}|${targetId}`
-					const edgeId = `attestation/${attestationId}`
+					const edgeId = `attestation/${attestationId}|1`
 
-					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdgeWithKey(
-							edgeId,
-							sourceId,
-							targetId,
-							{
-								id: edgeId,
-								label: allSchemas.get(attestation.schemaId)?.name ?? attestationId,
-								color: hashStringToColor(`schema/${attestation.schemaId}`),
-								size: 3,
-							},
-						)
+					graph.mergeEdgeWithKey(
+						edgeId,
+						sourceId,
+						targetId,
+						{
+							id: edgeId,
+							label: allSchemas.get(attestation.schemaId)?.name ?? attestationId,
 				}
 
 				// Attester → Schema
@@ -142,18 +135,17 @@
 					// const edgeId = `${sourceId}|${targetId}`
 					const edgeId = `attestation/${attestationId}|1`
 
-					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdgeWithKey(
-							edgeId,
-							sourceId,
-							targetId,
-							{
-								id: edgeId,
-								type: 'curved',
-								color: hashStringToColor(attesterNodeId),
-								size: 3,
-							},
-						)
+					graph.mergeEdgeWithKey(
+						edgeId,
+						sourceId,
+						targetId,
+						{
+							id: edgeId,
+							type: 'curved',
+							color: hashStringToColor(attesterNodeId),
+							size: 3,
+						},
+					)
 				}
 
 				// Schema → Recipient
@@ -163,18 +155,17 @@
 					// const edgeId = `${sourceId}|${targetId}`
 					const edgeId = `attestation/${attestationId}|2`
 
-					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
-						graph.addEdgeWithKey(
-							edgeId,
-							sourceId,
-							targetId,
-							{
-								id: edgeId,
-								type: 'curvedArrow',
-								color: hashStringToColor(attesterNodeId),
-								size: 3,
-							},
-						)
+					graph.mergeEdgeWithKey(
+						edgeId,
+						sourceId,
+						targetId,
+						{
+							id: edgeId,
+							type: 'curvedArrow',
+							color: hashStringToColor(attesterNodeId),
+							size: 3,
+						},
+					)
 				}
 			}
 		}
