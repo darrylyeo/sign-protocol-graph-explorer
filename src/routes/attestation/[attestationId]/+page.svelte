@@ -95,9 +95,13 @@
 	}
 
 	[data-format="code"] {
-		font-size: 0.85em;
+		font-size: 0.8em;
 		font-family: monospace;
 		tab-size: 4;
 		white-space: pre-wrap;
+		overflow-wrap: break-word;
+		max-width: 30rem;
+		max-height: 8lh;
+		overflow-y: auto;
 	}
 </style>
