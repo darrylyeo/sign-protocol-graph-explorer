@@ -79,22 +79,26 @@
 	// (Derived)
 	let renderer: Sigma | undefined = $derived.by(() => {
 		if(browser && graph && container && Sigma && SigmaRenderingModule && NodeImageModule && EdgeCurveModule){
+			const nodeProgramClasses = {
+				'circle': SigmaRenderingModule.NodeCircleProgram,
+				'point': SigmaRenderingModule.NodePointProgram,
+				'image': NodeImageModule.createNodeImageProgram({
+					objectFit: 'contain',
+					padding: 0.1,
+					correctCentering: true,
+				}),
+				'pictogram': NodeImageModule.NodePictogramProgram,
+			}
+
 			const renderer = new Sigma(
 				graph,
 				container,
 				{
 					defaultEdgeType: 'curved',
+					renderLabels: true,
 					renderEdgeLabels: true,
-					nodeProgramClasses: {
-						'circle': SigmaRenderingModule.NodeCircleProgram,
-						'point': SigmaRenderingModule.NodePointProgram,
-						'image': NodeImageModule.createNodeImageProgram({
-							objectFit: 'contain',
-							padding: 0.1,
-							correctCentering: true,
-						}),
-						'pictogram': NodeImageModule.NodePictogramProgram,
-					},
+					nodeProgramClasses,
+					nodeHoverProgramClasses: nodeProgramClasses,
 					edgeProgramClasses: {
 						'straight': SigmaRenderingModule.EdgeArrowProgram,
 						'curved': EdgeCurveModule.EdgeCurvedArrowProgram,
