@@ -349,9 +349,10 @@
 
 	<header>
 		<h1>
-			<a href="/">Attestation Graph</a>
+			<a href="/">SignKaleidoscope</a>
 		</h1>
-		powered by <a href="https://sign.global" target="_blank"><img src={SignLogo} alt="Sign" height="40" /></a>
+
+		<p>attestation graph powered by <a href="https://sign.global" target="_blank"><img src={SignLogo} alt="Sign" height="40" /></a></p>
 	</header>
 
 	{#key $page}
