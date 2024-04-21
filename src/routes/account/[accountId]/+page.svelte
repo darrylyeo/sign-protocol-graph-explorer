@@ -54,6 +54,8 @@
 
 				<tbody>
 					{#each attestationsForAccount as attestation}
+						{@const schemaId = attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId}
+
 						<tr>
 							<td>
 								<a href={`/attestation/${attestation.id}`}>
@@ -61,8 +63,8 @@
 								</a>
 							</td>
 							<td>
-								<a href={`/schema/${attestation.schemaId}`}>
-									{schemas.find(_schema => _schema.id === attestation.schemaId)?.name ?? attestation.schemaId}
+								<a href={`/schema/${schemaId}`}>
+									{schemas.find(_schema => _schema.id === schemaId)?.name ?? schemaId}
 								</a>
 							</td>
 							<td data-format="address">
