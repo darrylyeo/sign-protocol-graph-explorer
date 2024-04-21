@@ -108,10 +108,14 @@
 	$effect(() => {
 		for (const [attestationId, attestation] of allAttestations.entries()) {
 			for (const recipient of attestation.recipients) {
+				const attesterNodeId = `account/${attestation.attester}`
+				const recipientNodeId = `account/${recipient}`
+				const schemaNodeId = `schema/${attestation.schemaId}`
+
 				// Attester → Recipient
 				{
-					const sourceId = `account/${attestation.attester}`
-					const targetId = `account/${recipient}`
+					const sourceId = attesterNodeId
+					const targetId = recipientNodeId
 					const edgeId = `${sourceId}|${targetId}`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
@@ -129,8 +133,8 @@
 
 				// Attester → Schema
 				{
-					const sourceId = `account/${attestation.attester}`
-					const targetId = `schema/${attestation.schemaId}`
+					const sourceId = attesterNodeId
+					const targetId = schemaNodeId
 					const edgeId = `${sourceId}|${targetId}`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
@@ -146,8 +150,8 @@
 
 				// Schema → Recipient
 				{
-					const sourceId = `schema/${attestation.schemaId}`
-					const targetId = `account/${recipient}`
+					const sourceId = schemaNodeId
+					const targetId = recipientNodeId
 					const edgeId = `${sourceId}|${targetId}`
 
 					if(!graph.hasEdge(edgeId) && graph.hasNode(sourceId) && graph.hasNode(targetId))
