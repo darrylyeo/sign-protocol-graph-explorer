@@ -126,10 +126,10 @@
 			})
 		}
 
-		graph = graph
-	})
+	// 	graph = graph
+	// })
 
-	$effect(() => {
+	// $effect(() => {
 		for (const [attestationId, attestation] of allAttestations.entries()) {
 			const schemaId = attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId
 
