@@ -148,6 +148,8 @@
 					targetId,
 					{
 						id: edgeId,
+						// label: attestationId,
+						label: 'attested',
 						type: 'curved',
 						color: hashStringToColor(attesterNodeId),
 						size: 3,
@@ -190,6 +192,8 @@
 						targetId,
 						{
 							id: edgeId,
+							// label: attestationId,
+							label: 'on',
 							type: 'curvedArrow',
 							color: hashStringToColor(attesterNodeId),
 							size: 3,
@@ -274,9 +278,11 @@
 			edgeReducer={(edgeId, attributes) => ({
 				...attributes,
 				// ...edgeId === hoveredEdge && {
-				...highlightedSubgraph?.edgeIds?.has(edgeId.split('|')[0]) && {
+				...highlightedSubgraph?.edgeIds?.has(edgeId.split('|')[0]) ? {
 					size: attributes.size * 2,
 					zIndex: 1,
+				} : {
+					label: undefined,
 				},
 			})}
 			nodeReducer={(nodeId, attributes) => ({
