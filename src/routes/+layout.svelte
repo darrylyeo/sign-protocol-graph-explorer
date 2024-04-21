@@ -461,6 +461,10 @@
 		& > article {
 			place-self: end start;
 			transform-origin: left bottom;
+
+			&:empty {
+				display: none;
+			}
 		}
 
 		& > form {
