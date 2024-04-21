@@ -186,23 +186,26 @@
 						edgeCount?: number,
 					},
 				) => {
-					if (typeof edgeIndex === 'number') {
-						const curvature = (
-							// [-1, 1]
-							edgeIndex / (edgeCount - 1) * 2 - 1
-							// [0, 1]
-							// edgeIndex / (edgeCount - 1)
-							// (0, 1]
-							// (edgeIndex + 1) / (edgeCount)
-						) * (
-							1 - Math.exp(-0.1 * edgeCount)
-						)
+					const curvature = (
+						typeof edgeIndex === 'number' && typeof edgeCount === 'number' ?
+							(
+								// [-1, 1]
+								edgeCount === 1 ? 0 : edgeIndex / (edgeCount - 1) * 2 - 1
+								// [0, 1]
+								// edgeIndex / (edgeCount - 1)
+								// (0, 1]
+								// (edgeIndex + 1) / (edgeCount)
+							) * (
+								1 - Math.exp(-0.1 * edgeCount)
+							)
+						:
+							0
+					)
 
-						graph.mergeEdgeAttributes(edge, {
-							type: type.replace(/^(?:curved|straight)/, curvature !== 0 ? 'curved' : 'straight'),
-							curvature,
-						})
-					}
+					graph.mergeEdgeAttributes(edge, {
+						type: type.replace(/^(?:curved|straight)/, curvature !== 0 ? 'curved' : 'straight'),
+						curvature,
+					})
 
 					// 	if(curvature !== 0)
 					// 		graph.mergeEdgeAttributes(edge, {
