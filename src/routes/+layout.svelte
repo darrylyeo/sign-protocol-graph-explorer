@@ -256,8 +256,12 @@
 
 		& > article {
 			place-self: end start;
+			/* place-self: start end; */
+			margin: 1em;
+			border-radius: 1em;
+			border: 2px solid #0000001a;
 
-			background-color: #fffdef6f;
+			background-color: #fffdefd1;
 			backdrop-filter: blur(10px);
 
 			padding: 1rem;
