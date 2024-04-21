@@ -208,7 +208,9 @@
 						{
 							id: edgeId,
 							// label: attestationId,
-							label: 'on',
+							label: 'to',
+							// label: 'recieved attestation with schema',
+							// label: '→',
 							type: 'curvedArrow',
 							color: hashStringToColor(attesterNodeId),
 							size: 3,
