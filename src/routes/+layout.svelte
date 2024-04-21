@@ -147,7 +147,9 @@
 							targetId,
 							{
 								id: edgeId,
-								label: attestationId,
+								type: 'curved',
+								color: hashStringToColor(attesterNodeId),
+								size: 3,
 							},
 						)
 				}
@@ -166,7 +168,9 @@
 							targetId,
 							{
 								id: edgeId,
-								label: attestationId,
+								type: 'curvedArrow',
+								color: hashStringToColor(attesterNodeId),
+								size: 3,
 							},
 						)
 				}
