@@ -136,24 +136,24 @@
 				const recipientNodeId = `account/${recipient}`
 
 				// Attester → Recipient
-				{
-					const sourceId = attesterNodeId
-					const targetId = recipientNodeId
-					const edgeId = `attestation/${attestationId}|${sourceId}|${targetId}`
+				// {
+				// 	const sourceId = attesterNodeId
+				// 	const targetId = recipientNodeId
+				// 	const edgeId = `attestation/${attestationId}|${sourceId}|${targetId}`
 
-					graph.mergeEdgeWithKey(
-						edgeId,
-						sourceId,
-						targetId,
-						{
-							id: edgeId,
-							type: 'straight',
-							label: `${allSchemas.get(attestation.schemaId)?.name ?? attestationId} →`,
-							color: hashStringToColor(`schema/${attestation.schemaId}`),
-							size: 2,
-						},
-					)
-				}
+				// 	graph.mergeEdgeWithKey(
+				// 		edgeId,
+				// 		sourceId,
+				// 		targetId,
+				// 		{
+				// 			id: edgeId,
+				// 			type: 'straight',
+				// 			label: `${allSchemas.get(attestation.schemaId)?.name ?? attestationId} →`,
+				// 			color: hashStringToColor(`schema/${attestation.schemaId}`),
+				// 			size: 2,
+				// 		},
+				// 	)
+				// }
 
 				// Schema → Recipient
 				{
