@@ -177,9 +177,14 @@
 				(
 					edge,
 					{
+						type,
 						edgeIndex,
 						edgeCount,
-					}: { edgeIndex: number; edgeCount: number } | { edgeIndex?: null; edgeCount?: null },
+					}: {
+						type: string,
+						edgeIndex?: number,
+						edgeCount?: number,
+					},
 				) => {
 					if (typeof edgeIndex === 'number') {
 						const curvature = (
@@ -193,20 +198,26 @@
 							1 - Math.exp(-0.1 * edgeCount)
 						)
 
-						if(curvature !== 0)
-							graph.mergeEdgeAttributes(edge, {
-								type: 'curved',
-								curvature,
-							})
-						else
-							graph.mergeEdgeAttributes(edge, {
-								type: 'straight',
-							})
-					} else {
 						graph.mergeEdgeAttributes(edge, {
-							type: 'straight',
+							type: type.replace(/^(?:curved|straight)/, curvature !== 0 ? 'curved' : 'straight'),
+							curvature,
 						})
 					}
+
+					// 	if(curvature !== 0)
+					// 		graph.mergeEdgeAttributes(edge, {
+					// 			type: 'curved',
+					// 			curvature,
+					// 		})
+					// 	else
+					// 		graph.mergeEdgeAttributes(edge, {
+					// 			type: 'straight',
+					// 		})
+					// } else {
+					// 	graph.mergeEdgeAttributes(edge, {
+					// 		type: 'straight',
+					// 	})
+					// }
 				},
 			)
 		}
