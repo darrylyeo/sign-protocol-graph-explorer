@@ -341,7 +341,9 @@
 	</div>
 
 	<header>
-		<h1>Attestation Graph</h1>
+		<h1>
+			<a href="/">Attestation Graph</a>
+		</h1>
 		powered by Sign
 	</header>
 
