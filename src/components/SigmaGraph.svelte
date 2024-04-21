@@ -258,6 +258,7 @@
 			settings: {
 				...forceAtlas2.inferSettings(graph),
 				adjustSizes: true,
+				slowDown: 10,
 			},
 		})
 
