@@ -108,12 +108,33 @@
 
 	$effect(() => {
 		for (const [attestationId, attestation] of allAttestations.entries()) {
-			for (const recipient of attestation.recipients) {
-				const schemaId = attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId
+			const schemaId = attestation.mode === 'onchain' ? `${attestation.mode}_${attestation.chainType}_${attestation.chainId}_${attestation.schemaId}` : attestation.schemaId
 
-				const attesterNodeId = `account/${attestation.attester}`
+			const attesterNodeId = `account/${attestation.attester}`
+			const schemaNodeId = `schema/${schemaId}`
+
+			// Attester → Schema
+			{
+				const sourceId = attesterNodeId
+				const targetId = schemaNodeId
+				// const edgeId = `${sourceId}|${targetId}`
+				const edgeId = `attestation/${attestationId}|1`
+
+				graph.mergeEdgeWithKey(
+					edgeId,
+					sourceId,
+					targetId,
+					{
+						id: edgeId,
+						type: 'curved',
+						color: hashStringToColor(attesterNodeId),
+						size: 3,
+					},
+				)
+			}
+
+			for (const recipient of attestation.recipients) {
 				const recipientNodeId = `account/${recipient}`
-				const schemaNodeId = `schema/${schemaId}`
 
 				// Attester → Recipient
 				{
@@ -128,25 +149,9 @@
 						targetId,
 						{
 							id: edgeId,
-							label: allSchemas.get(attestation.schemaId)?.name ?? attestationId,
-				}
-
-				// Attester → Schema
-				{
-					const sourceId = attesterNodeId
-					const targetId = schemaNodeId
-					// const edgeId = `${sourceId}|${targetId}`
-					const edgeId = `attestation/${attestationId}|1`
-
-					graph.mergeEdgeWithKey(
-						edgeId,
-						sourceId,
-						targetId,
-						{
-							id: edgeId,
-							type: 'curved',
-							color: hashStringToColor(attesterNodeId),
-							size: 3,
+							label: `${allSchemas.get(attestation.schemaId)?.name ?? attestationId} →`,
+							color: hashStringToColor(`schema/${attestation.schemaId}`),
+							size: 2,
 						},
 					)
 				}
