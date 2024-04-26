@@ -23,7 +23,7 @@
 <section>
 	<div>
 		<header>
-			<h1>{schema.name}</h1>
+			<h1>{schema.name || `[Schema on ${schema.chainId in chainIdToName ? chainIdToName[schema.chainId] : schema.chainId}]`}</h1>
 
 			<span>Schema</span>
 		</header>

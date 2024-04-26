@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Types/constants
-	import type { AttestationSummary, Schema } from '$/api/sign.js'
+	import { type AttestationSummary, type Schema, chainIdToName } from '$/api/sign.js'
 	import { networkImages } from '$/images/images.js'
 
 	type Subgraph = {
@@ -148,7 +148,7 @@
 		graph.mergeNode(nodeId, {
 			type: 'image',
 			image: networkImages[schema.chainId],
-			label: schema.name,
+			label: schema.name || `[Schema on ${schema.chainId in chainIdToName ? chainIdToName[schema.chainId] : schema.chainId}]`,
 			size: 25 + Math.log(schema.attestationCount) * 3,
 			color: hashStringToColor(nodeId),
 			...!graph.hasNode(nodeId) && {
