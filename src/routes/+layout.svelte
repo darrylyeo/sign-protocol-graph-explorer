@@ -46,7 +46,7 @@
 
 
 	// Internal state
-	// import { Map } from 'svelte/reactivity'
+	import { Map } from 'svelte/reactivity'
 
 	let allSchemas = $state(
 		new Map<string, Schema>()
@@ -96,10 +96,6 @@
 					address,
 				})
 		}
-
-		allSchemas = allSchemas
-		allAttestations = allAttestations
-		allAccounts = allAccounts
 	})
 
 	// (Graph)
