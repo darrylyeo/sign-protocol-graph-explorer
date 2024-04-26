@@ -46,6 +46,9 @@
 
 
 	// Internal state
+	let autoLoadOnHover = $state(false)
+	let preloadedData: any | undefined = $state()
+
 	import { Map } from 'svelte/reactivity'
 
 	let allSchemas = $state(
@@ -84,6 +87,36 @@
 			[
 				...$page.data.attestations ?? [],
 				...$page.data.attestationsForAccount ?? [],
+			] as AttestationSummary[]
+		)) {
+			allAttestations.set(attestation.id, attestation)
+
+			for (const address of [
+				attestation.attester,
+				...attestation.recipients
+			])
+				allAccounts.set(address, {
+					address,
+				})
+		}
+	})
+
+	$effect(() => {
+		if(!(preloadedData && autoLoadOnHover)) return
+
+		for (const schema of (
+			[
+				...preloadedData.schemas ?? [],
+				...preloadedData.schemasForAccount ?? [],
+				...preloadedData.attestationsForAccount?.map(attestation => attestation.schema) ?? [],
+			] as Schema[]
+		))
+			allSchemas.set(schema.id, schema)
+
+		for (const attestation of (
+			[
+				...preloadedData.attestations ?? [],
+				...preloadedData.attestationsForAccount ?? [],
 			] as AttestationSummary[]
 		)) {
 			allAttestations.set(attestation.id, attestation)
@@ -229,9 +262,15 @@
 	$effect(() => {
 		if(hoveredNodeId){
 			preloadData(`/${hoveredNodeId}`)
+				.then(({ data }) => {
+					preloadedData = data
+				})
 		}
 		else if(hoveredEdgeId){
 			preloadData(`/${hoveredEdgeId.split('|')[0]}`)
+				.then(({ data }) => {
+					preloadedData = data
+				})
 		}
 	})
 
@@ -413,9 +452,16 @@
 	<footer
 		transition:scale={{ duration: 300, easing: expoOut, start: 0.5 }}
 	>
-		<a href="https://scan.sign.global" target="_blank">SignScan</a>
-		•
-		<a href="https://github.com/darrylyeo/sign-protocol-graph-explorer" target="_blank">GitHub</a>
+		<label>
+			<input type="checkbox" bind:checked={autoLoadOnHover} />
+			<span>Hover to reveal</span>
+		</label>
+
+		<span>
+			<a href="https://scan.sign.global" target="_blank">SignScan</a>
+			•
+			<a href="https://github.com/darrylyeo/sign-protocol-graph-explorer" target="_blank">GitHub</a>
+		</span>
 	</footer>
 </main>
 
@@ -501,7 +547,7 @@
 
 		& > article,
 		& > form,
-		& > footer {
+		& > footer > * {
 			margin: 1em;
 			border-radius: 1em;
 			border: 2px solid #0000001a;
@@ -509,7 +555,7 @@
 			background-color: #fffdefd1;
 			backdrop-filter: blur(10px);
 
-			padding: 1rem;
+			padding: 1em;
 
 			& > * {
 				filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
@@ -542,6 +588,20 @@
 			place-self: end end;
 			transform-origin: right bottom;
 			font-size: 0.9em;
+
+			display: grid;
+			justify-items: end;
+			align-items: end;
+
+			label {
+				font-size: 0.8em;
+
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 1ch;
+				margin-bottom: -0.75em;
+			}
 		}
 
 		.graph {
