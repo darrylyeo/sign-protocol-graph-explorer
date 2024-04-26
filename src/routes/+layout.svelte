@@ -62,12 +62,12 @@
 		}>()
 	)
 
-	$effect(() => {
-		for (const [address, account] of allAccounts.entries())
-			resolveEnsName(address).then(ensName => {
-				account.ensName = ensName
-			})
-	})
+	// $effect(() => {
+	// 	for (const [address, account] of allAccounts.entries())
+	// 		resolveEnsName(address).then(ensName => {
+	// 			account.ensName = ensName
+	// 		})
+	// })
 
 	let allAttestations = $state(
 		new Map<string, AttestationSummary>()
