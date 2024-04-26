@@ -108,8 +108,7 @@
 		})
 	)
 
-	let refreshKey = $state(0)
-
+	let refreshKey = 0
 	for (const schema of schemas) {
 		const nodeId = `schema/${schema.id}`
 
