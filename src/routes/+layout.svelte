@@ -515,6 +515,11 @@
 				text-decoration: none;
 			}
 		}
+
+		p {
+			width: min-content;
+			min-width: 100%;
+		}
 	</style>
 </svelte:head>
 
