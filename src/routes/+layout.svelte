@@ -228,10 +228,10 @@
 
 	$effect(() => {
 		if(hoveredNodeId){
-			preloadData(hoveredNodeId)
+			preloadData(`/${hoveredNodeId}`)
 		}
 		else if(hoveredEdgeId){
-			preloadData(hoveredEdgeId.split('|')[0])
+			preloadData(`/${hoveredEdgeId.split('|')[0]}`)
 		}
 	})
 
