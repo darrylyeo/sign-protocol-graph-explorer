@@ -11,7 +11,7 @@ export const load: LayoutLoad = async () => {
 	] = await Promise.all([
 		Promise.all(
 			Array.from(
-				{ length: 2 }, 
+				{ length: 5 }, 
 				(_, index) => getSchemas({ page: index + 1 }),
 			),
 		)
