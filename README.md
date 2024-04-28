@@ -1,38 +1,17 @@
-# create-svelte
+# SignKaleidoscope
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+[SignKaleidoscope](https://sign-protocol-graph-explorer.netlify.app) is an explorer for Sign Protocol with an interactive graph visualization!
 
-## Creating a project
+Explore Accounts, Schemas and Attestations by clicking nodes and edges in the graph, using the search field, or navigating links in the detail overlays. Drag to pan the graph and scroll to zoom in and out. Nodes and edges will automatically appear and connect within the graph as new entities are discovered.
 
-If you're seeing this, you've probably already done this step. Congrats!
+In the graph, Accounts and Schemas are represented as nodes, and each Attestation is represented as a set of directed edges. Schema nodes are sized according to how often they are used within the protocol, and are marked with an icon representing the onchain or offchain location where the Schema is stored – whether on Arweave, IPFS, Ethereum or another blockchain.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Hovering your mouse over an edge highlights all nodes and edges involved in an Attestation. Since Attestations in Sign Protocol are a one-to-many relationship, you'll see an edge from the "attester" Account node to the Schema node, and a corresponding edge from the Schema node to each of the "recipient" Account nodes.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## How it's Made
 
-## Developing
+* Data: SignScan API º https://scan.sign.global
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+* Frontend stack: SvelteKit + [Svelte 5 beta](https://svelte-5-preview.vercel.app) + TypeScript + vanilla CSS
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+* Graph visualization: Sigma.js + Graphology – https://sigmajs.org
